@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minesweeper/game_page.dart';
 import 'package:minesweeper/start_page.dart';
 
 void main() {
@@ -16,7 +17,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const StartPage(),
+      initialRoute: "/",
+      routes: {
+        "/": (context) => const StartPage(),
+        "/game" : (context) => const GamePage(),
+      },
     );
   }
 }

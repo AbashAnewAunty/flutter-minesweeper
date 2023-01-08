@@ -22,10 +22,7 @@ class StartPage extends StatelessWidget {
 
   Widget _quickPlayButton(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const GamePage()));
-      },
+      onPressed: () => Navigator.of(context).pushNamed("/game"),
       child: const Text("Quick Play"),
     );
   }
