@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: {
         "/": (context) => const StartPage(),
-        "/game" : (context) => const GamePage(),
+        "/game" : (context) => GamePage(),
       },
     );
   }
