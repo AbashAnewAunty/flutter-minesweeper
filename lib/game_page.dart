@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'game_tile.dart';
 import 'model/tile.dart';
 
 class GamePage extends StatelessWidget {
@@ -33,7 +34,7 @@ class GamePage extends StatelessWidget {
       color: Colors.blueGrey,
       child: SafeArea(
         child: Container(
-          color: Colors.blueGrey,
+          color: Colors.grey,
           child: Column(
             children: [
               _tempAppbar(),
@@ -48,8 +49,11 @@ class GamePage extends StatelessWidget {
                     crossAxisSpacing: 1,
                     children: List.generate(
                       _tiles.length,
-                      (index) => ColoredBox(
-                        color: _tiles[index].hasBomb ? Colors.red : Colors.grey,
+                      (index) => GameTile(
+                        tile: _tiles[index],
+                        getBombsAroundCount: () {
+                          return _calculateBombsAroundCount(index);
+                        },
                       ),
                     ),
                   ),
@@ -77,5 +81,159 @@ class GamePage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  /// TODO: リファクタリング
+  int _calculateBombsAroundCount(int tileIndex) {
+    int resultBombCount = 0;
+    if (tileIndex == 0) {
+      /// 左上
+      if (_tiles[tileIndex + 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex + _tileColumnCount + 1].hasBomb) {
+        resultBombCount++;
+      }
+      return resultBombCount;
+    } else if (tileIndex == _tileColumnCount - 1) {
+      /// 右上
+      if (_tiles[tileIndex - 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex + _tileColumnCount - 1].hasBomb) {
+        resultBombCount++;
+      }
+      return resultBombCount;
+    } else if (tileIndex == _tileColumnCount * (_tileRowCount - 1)) {
+      /// 左下
+      if (_tiles[tileIndex + 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex - _tileColumnCount + 1].hasBomb) {
+        resultBombCount++;
+      }
+      return resultBombCount;
+    } else if (tileIndex == _tileColumnCount * _tileRowCount - 1) {
+      /// 右下
+      if (_tiles[tileIndex - 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex - _tileColumnCount - 1].hasBomb) {
+        resultBombCount++;
+      }
+      return resultBombCount;
+    } else if (tileIndex > 0 && tileIndex < _tileColumnCount - 1) {
+      /// 上辺
+      if (_tiles[tileIndex - 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex + 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex + _tileColumnCount - 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex + _tileColumnCount + 1].hasBomb) {
+        resultBombCount++;
+      }
+      return resultBombCount;
+    } else if (tileIndex > _tileColumnCount * (_tileRowCount - 1) &&
+        tileIndex < _tileColumnCount * _tileRowCount - 1) {
+      /// 下辺
+      if (_tiles[tileIndex - 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex + 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex - _tileColumnCount - 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex - _tileColumnCount + 1].hasBomb) {
+        resultBombCount++;
+      }
+      return resultBombCount;
+    } else if (tileIndex % _tileColumnCount == 0) {
+      /// 左辺
+      if (_tiles[tileIndex + 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex - _tileColumnCount + 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex + _tileColumnCount + 1].hasBomb) {
+        resultBombCount++;
+      }
+      return resultBombCount;
+    } else if ((tileIndex + 1) % _tileColumnCount == 0) {
+      /// 右辺
+      if (_tiles[tileIndex - 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex - _tileColumnCount - 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex + _tileColumnCount - 1].hasBomb) {
+        resultBombCount++;
+      }
+      return resultBombCount;
+    } else {
+      /// その他
+      if (_tiles[tileIndex + 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex - 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex - _tileColumnCount - 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex - _tileColumnCount + 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex + _tileColumnCount - 1].hasBomb) {
+        resultBombCount++;
+      }
+      if (_tiles[tileIndex + _tileColumnCount + 1].hasBomb) {
+        resultBombCount++;
+      }
+      return resultBombCount;
+    }
   }
 }
