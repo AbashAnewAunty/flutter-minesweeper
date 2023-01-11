@@ -34,20 +34,47 @@ class GamePage extends StatelessWidget {
       child: SafeArea(
         child: Container(
           color: Colors.blueGrey,
-          child: Center(
-            child: GridView.count(
-              crossAxisCount: _tileColumnCount,
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              physics: const NeverScrollableScrollPhysics(),
-              children: List.generate(
-                _tiles.length,
-                (index) => ColoredBox(
-                  color: _tiles[index].hasBomb ? Colors.red : Colors.grey,
+          child: Column(
+            children: [
+              _tempAppbar(),
+              Expanded(
+                child: Center(
+                  child: GridView.count(
+                    crossAxisCount: _tileColumnCount,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 20),
+                    physics: const NeverScrollableScrollPhysics(),
+                    mainAxisSpacing: 1,
+                    crossAxisSpacing: 1,
+                    children: List.generate(
+                      _tiles.length,
+                      (index) => ColoredBox(
+                        color: _tiles[index].hasBomb ? Colors.red : Colors.grey,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _tempAppbar() {
+    return AppBar(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          SizedBox(
+            width: 20,
+            child: Icon(Icons.lock_clock),
+          ),
+          SizedBox(width: 10),
+          Text("00:10:99"),
+          SizedBox(width: 60),
+        ],
       ),
     );
   }
