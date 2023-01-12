@@ -49,12 +49,15 @@ class GamePage extends StatelessWidget {
                     crossAxisSpacing: 1,
                     children: List.generate(
                       _tiles.length,
-                      (index) => GameTile(
-                        tile: _tiles[index],
-                        getBombsAroundCount: () {
-                          return _calculateBombsAroundCount(index);
-                        },
-                      ),
+                      (index) {
+                        _calculateBombsAroundCount(index);
+                        return GameTile(
+                          tile: _tiles[index],
+                          getBombsAroundCount: () {
+                            return _calculateBombsAroundCount(index);
+                          },
+                        );
+                      },
                     ),
                   ),
                 ),
