@@ -16,6 +16,14 @@ class GamePageViewModel extends ChangeNotifier{
 
   List<Tile> get tiles => _tiles;
 
+  void onTapTileAt(int index){
+    if(index.isNegative || index >= _tiles.length){
+      return;
+    }
+    _tiles[index].isOpen = true;
+    notifyListeners();
+  }
+
   void generateRandomList() {
     const int totalTileCount = _tileColumnCount * _tileRowCount;
     _tiles.clear();

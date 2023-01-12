@@ -1,50 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:minesweeper/view_model/game_page_view_model.dart';
+import 'package:provider/provider.dart';
 
-import 'model/tile.dart';
-
-class GameTile extends StatefulWidget {
-  final Tile tile;
+class GameTile extends StatelessWidget {
+  final int tileIndex;
   final int neighborBombsCount;
 
   const GameTile({
     super.key,
-    required this.tile,
+    required this.tileIndex,
     this.neighborBombsCount = 0,
   });
 
   @override
-  State<GameTile> createState() => _GameTileState();
-}
-
-class _GameTileState extends State<GameTile> {
-  Color _tileColor = Colors.blueGrey;
-  int _bombsAroundCount = 0;
-
-  @override
   Widget build(BuildContext context) {
+    final viewModel = context.read<GamePageViewModel>();
     return GestureDetector(
-      onTap: () {
-        if (widget.tile.hasBomb) {
-          setState(() {
-            _tileColor = Colors.red;
-          });
-        } else {
-          setState(() {
-            _tileColor = Colors.lightBlueAccent;
-            if (widget.neighborBombsCount != 0) {
-              _bombsAroundCount = widget.neighborBombsCount;
-            }
-          });
-        }
-      },
-      child: ColoredBox(
-        color: _tileColor,
-        child: Center(
-          child: _existsBombsAround ? Text("$_bombsAroundCount") : null,
-        ),
+      onTap: () => viewModel.onTapTileAt(tileIndex),
+      child: Selector<GamePageViewModel, bool>(
+        selector: (context, viewModel) => viewModel.tiles[tileIndex].isOpen,
+        builder: (context, isOpen, child) {
+          return ColoredBox(
+            color: _getColor(
+              viewModel.tiles[tileIndex].isOpen,
+              viewModel.tiles[tileIndex].hasBomb,
+            ),
+            child: Center(
+              child: isOpen &&
+                      _existsBombsAround &&
+                      !viewModel.tiles[tileIndex].hasBomb
+                  ? Text("$neighborBombsCount")
+                  : null,
+            ),
+          );
+        },
       ),
     );
   }
 
-  bool get _existsBombsAround => _bombsAroundCount != 0;
+  bool get _existsBombsAround => neighborBombsCount != 0;
+
+  Color _getColor(bool isOpen, bool hasBomb) {
+    if (!isOpen) {
+      return Colors.blueGrey;
+    }
+    if (hasBomb) {
+      return Colors.red;
+    } else {
+      return Colors.lightBlueAccent;
+    }
+  }
 }

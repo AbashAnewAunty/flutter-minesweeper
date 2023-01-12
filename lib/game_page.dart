@@ -45,7 +45,7 @@ class _GamePageState extends State<GamePage> {
                         final int neighborBombsCount =
                             viewModel.calculateBombsAroundCount(index);
                         return GameTile(
-                          tile: viewModel.tiles[index],
+                          tileIndex: index,
                           neighborBombsCount: neighborBombsCount,
                         );
                       },
