@@ -50,12 +50,11 @@ class GamePage extends StatelessWidget {
                     children: List.generate(
                       _tiles.length,
                       (index) {
-                        _calculateBombsAroundCount(index);
+                        final int neighborBombsCount =
+                            _calculateBombsAroundCount(index);
                         return GameTile(
                           tile: _tiles[index],
-                          getBombsAroundCount: () {
-                            return _calculateBombsAroundCount(index);
-                          },
+                          neighborBombsCount: neighborBombsCount,
                         );
                       },
                     ),

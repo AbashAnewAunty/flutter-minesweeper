@@ -4,12 +4,12 @@ import 'model/tile.dart';
 
 class GameTile extends StatefulWidget {
   final Tile tile;
-  final ValueGetter<int> getBombsAroundCount;
+  final int neighborBombsCount;
 
   const GameTile({
     super.key,
     required this.tile,
-    required this.getBombsAroundCount,
+    this.neighborBombsCount = 0,
   });
 
   @override
@@ -29,11 +29,10 @@ class _GameTileState extends State<GameTile> {
             _tileColor = Colors.red;
           });
         } else {
-          final int bombsAroundCount = widget.getBombsAroundCount();
           setState(() {
             _tileColor = Colors.lightBlueAccent;
-            if (bombsAroundCount != 0) {
-              _bombsAroundCount = bombsAroundCount;
+            if (widget.neighborBombsCount != 0) {
+              _bombsAroundCount = widget.neighborBombsCount;
             }
           });
         }
