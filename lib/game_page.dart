@@ -1,35 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:minesweeper/view_model/game_page_view_model.dart';
+import 'package:provider/provider.dart';
 
 import 'game_tile.dart';
-import 'model/tile.dart';
 
-class GamePage extends StatelessWidget {
-  static const _tileRowCount = 18;
-  static const _tileColumnCount = 11;
-  static const _bombCount = 35;
-  late final List<Tile> _tiles;
+class GamePage extends StatefulWidget {
+  const GamePage({super.key});
 
-  GamePage({super.key}) {
-    _tiles = _generateRandomList(_tileRowCount * _tileColumnCount, _bombCount);
-  }
+  @override
+  State<GamePage> createState() => _GamePageState();
+}
 
-  List<Tile> _generateRandomList(int totalCount, int bombCount) {
-    final tiles = List.generate(
-      totalCount,
-      (index) {
-        if (index < _bombCount) {
-          return Tile(hasBomb: true);
-        } else {
-          return Tile(hasBomb: false);
-        }
-      },
-    );
-    tiles.shuffle();
-    return tiles;
+class _GamePageState extends State<GamePage> {
+  @override
+  void initState() {
+    super.initState();
+    final viewModel = context.read<GamePageViewModel>();
+    viewModel.generateRandomList();
   }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.read<GamePageViewModel>();
     return Material(
       color: Colors.blueGrey,
       child: SafeArea(
@@ -41,19 +33,19 @@ class GamePage extends StatelessWidget {
               Expanded(
                 child: Center(
                   child: GridView.count(
-                    crossAxisCount: _tileColumnCount,
+                    crossAxisCount: viewModel.tileColumnCount,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 15, vertical: 20),
                     physics: const NeverScrollableScrollPhysics(),
                     mainAxisSpacing: 1,
                     crossAxisSpacing: 1,
                     children: List.generate(
-                      _tiles.length,
+                      viewModel.tiles.length,
                       (index) {
                         final int neighborBombsCount =
-                            _calculateBombsAroundCount(index);
+                            viewModel.calculateBombsAroundCount(index);
                         return GameTile(
-                          tile: _tiles[index],
+                          tile: viewModel.tiles[index],
                           neighborBombsCount: neighborBombsCount,
                         );
                       },
@@ -83,159 +75,5 @@ class GamePage extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  /// TODO: リファクタリング
-  int _calculateBombsAroundCount(int tileIndex) {
-    int resultBombCount = 0;
-    if (tileIndex == 0) {
-      /// 左上
-      if (_tiles[tileIndex + 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex + _tileColumnCount + 1].hasBomb) {
-        resultBombCount++;
-      }
-      return resultBombCount;
-    } else if (tileIndex == _tileColumnCount - 1) {
-      /// 右上
-      if (_tiles[tileIndex - 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex + _tileColumnCount - 1].hasBomb) {
-        resultBombCount++;
-      }
-      return resultBombCount;
-    } else if (tileIndex == _tileColumnCount * (_tileRowCount - 1)) {
-      /// 左下
-      if (_tiles[tileIndex + 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex - _tileColumnCount + 1].hasBomb) {
-        resultBombCount++;
-      }
-      return resultBombCount;
-    } else if (tileIndex == _tileColumnCount * _tileRowCount - 1) {
-      /// 右下
-      if (_tiles[tileIndex - 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex - _tileColumnCount - 1].hasBomb) {
-        resultBombCount++;
-      }
-      return resultBombCount;
-    } else if (tileIndex > 0 && tileIndex < _tileColumnCount - 1) {
-      /// 上辺
-      if (_tiles[tileIndex - 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex + 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex + _tileColumnCount - 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex + _tileColumnCount + 1].hasBomb) {
-        resultBombCount++;
-      }
-      return resultBombCount;
-    } else if (tileIndex > _tileColumnCount * (_tileRowCount - 1) &&
-        tileIndex < _tileColumnCount * _tileRowCount - 1) {
-      /// 下辺
-      if (_tiles[tileIndex - 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex + 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex - _tileColumnCount - 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex - _tileColumnCount + 1].hasBomb) {
-        resultBombCount++;
-      }
-      return resultBombCount;
-    } else if (tileIndex % _tileColumnCount == 0) {
-      /// 左辺
-      if (_tiles[tileIndex + 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex - _tileColumnCount + 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex + _tileColumnCount + 1].hasBomb) {
-        resultBombCount++;
-      }
-      return resultBombCount;
-    } else if ((tileIndex + 1) % _tileColumnCount == 0) {
-      /// 右辺
-      if (_tiles[tileIndex - 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex - _tileColumnCount - 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex + _tileColumnCount - 1].hasBomb) {
-        resultBombCount++;
-      }
-      return resultBombCount;
-    } else {
-      /// その他
-      if (_tiles[tileIndex + 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex - 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex - _tileColumnCount - 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex - _tileColumnCount + 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex + _tileColumnCount - 1].hasBomb) {
-        resultBombCount++;
-      }
-      if (_tiles[tileIndex + _tileColumnCount + 1].hasBomb) {
-        resultBombCount++;
-      }
-      return resultBombCount;
-    }
   }
 }
