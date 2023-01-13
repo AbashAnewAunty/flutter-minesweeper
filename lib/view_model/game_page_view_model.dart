@@ -17,11 +17,15 @@ class GamePageViewModel extends ChangeNotifier{
   List<Tile> get tiles => _tiles;
 
   void onTapTileAt(int index){
+    _openTile(index);
+    notifyListeners();
+  }
+
+  void _openTile(int index){
     if(index.isNegative || index >= _tiles.length){
       return;
     }
     _tiles[index].isOpen = true;
-    notifyListeners();
   }
 
   void generateRandomList() {
