@@ -16,16 +16,16 @@ class GamePageViewModel extends ChangeNotifier {
 
   List<Tile> get tiles => _tiles;
 
-  void onTapTileAt(int index) {
+  void openTile(int index) {
     if (_tiles[index].hasBomb) {
-      _openTile(index);
+      _openSingleTile(index);
     } else {
       _openSafeTilesAround(index);
     }
     notifyListeners();
   }
 
-  _openTile(int index){
+  void _openSingleTile(int index){
     _tiles[index].isOpen = true;
   }
 
@@ -40,7 +40,7 @@ class GamePageViewModel extends ChangeNotifier {
       return;
     }
 
-    _openTile(index);
+    _openSingleTile(index);
 
     if (_tiles[index].bombsAroundCount != 0) {
       return;
