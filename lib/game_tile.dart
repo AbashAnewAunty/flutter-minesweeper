@@ -14,22 +14,41 @@ class GameTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<GamePageViewModel>();
     return GestureDetector(
-      onTap: () => viewModel.onTapTileAt(tileIndex),
+      onTap: () => viewModel.openTile(tileIndex),
+      onLongPress: () => viewModel.toggleFlag(tileIndex),
       child: Selector<GamePageViewModel, bool>(
         selector: (context, viewModel) => viewModel.tiles[tileIndex].isOpen,
         builder: (context, isOpen, child) {
-          return ColoredBox(
-            color: _getColor(
-              viewModel.tiles[tileIndex].isOpen,
-              viewModel.tiles[tileIndex].hasBomb,
-            ),
-            child: Center(
-              child: isOpen &&
-                      !viewModel.tiles[tileIndex].hasBomb &&
-                      viewModel.tiles[tileIndex].bombsAroundCount != 0
-                  ? Text("${viewModel.tiles[tileIndex].bombsAroundCount}")
-                  : null,
-            ),
+          return Selector<GamePageViewModel, bool>(
+            selector: (context, viewModel) =>
+                viewModel.tiles[tileIndex].hasFlag,
+            builder: (context, hasFlag, child) {
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  ColoredBox(
+                    color: _getColor(
+                      viewModel.tiles[tileIndex].isOpen,
+                      viewModel.tiles[tileIndex].hasBomb,
+                    ),
+                    child: Center(
+                      child: isOpen &&
+                              !viewModel.tiles[tileIndex].hasBomb &&
+                              viewModel.tiles[tileIndex].bombsAroundCount != 0
+                          ? Text(
+                              "${viewModel.tiles[tileIndex].bombsAroundCount}")
+                          : null,
+                    ),
+                  ),
+                  if (!viewModel.tiles[tileIndex].isOpen &&
+                      viewModel.tiles[tileIndex].hasFlag)
+                    const Icon(
+                      Icons.flag_rounded,
+                      color: Colors.white70,
+                    )
+                ],
+              );
+            },
           );
         },
       ),

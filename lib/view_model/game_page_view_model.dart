@@ -25,7 +25,18 @@ class GamePageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _openSingleTile(int index){
+  void toggleFlag(int index) {
+    if (_tiles[index].isOpen) {
+      return;
+    }
+    _tiles[index].hasFlag = !_tiles[index].hasFlag;
+    notifyListeners();
+  }
+
+  void _openSingleTile(int index) {
+    if(_tiles[index].hasFlag){
+      return;
+    }
     _tiles[index].isOpen = true;
   }
 
@@ -37,6 +48,9 @@ class GamePageViewModel extends ChangeNotifier {
       return;
     }
     if (_tiles[index].isOpen) {
+      return;
+    }
+    if (_tiles[index].hasFlag) {
       return;
     }
 

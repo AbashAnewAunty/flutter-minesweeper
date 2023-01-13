@@ -5,4 +5,5 @@ class Tile {
 
   bool isOpen = false;
   int bombsAroundCount = 0;
+  bool hasFlag = false;
 }
