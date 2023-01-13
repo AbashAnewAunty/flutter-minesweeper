@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../model/tile.dart';
 
-class GamePageViewModel extends ChangeNotifier{
+class GamePageViewModel extends ChangeNotifier {
   static const int _tileRowCount = 18;
   static const int _tileColumnCount = 11;
   static const int _bombCount = 35;
@@ -16,16 +16,34 @@ class GamePageViewModel extends ChangeNotifier{
 
   List<Tile> get tiles => _tiles;
 
-  void onTapTileAt(int index){
+  void onTapTileAt(int index) {
     _openTile(index);
     notifyListeners();
   }
 
   void _openTile(int index){
-    if(index.isNegative || index >= _tiles.length){
+    if (index.isNegative || index >= _tiles.length) {
       return;
     }
+    if(_tiles[index].hasBomb){
+      return;
+    }
+    if(_tiles[index].isOpen){
+      return;
+    }
+
     _tiles[index].isOpen = true;
+
+    if(_tiles[index].bombsAroundCount != 0){
+      return;
+    }
+
+    _openTile(index - 1);
+    _openTile(index + 1);
+    _openTile(index - _tileColumnCount);
+    _openTile(index + _tileColumnCount);
+
+    return;
   }
 
   void generateRandomList() {
@@ -42,6 +60,10 @@ class GamePageViewModel extends ChangeNotifier{
       },
     );
     _tiles.shuffle();
+    for(int i =0; i<_tiles.length; i++){
+      final int bombsAroundCount = calculateBombsAroundCount(i);
+      _tiles[i].bombsAroundCount = bombsAroundCount;
+    }
   }
 
   /// TODO: リファクタリング

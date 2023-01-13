@@ -4,12 +4,10 @@ import 'package:provider/provider.dart';
 
 class GameTile extends StatelessWidget {
   final int tileIndex;
-  final int neighborBombsCount;
 
   const GameTile({
     super.key,
     required this.tileIndex,
-    this.neighborBombsCount = 0,
   });
 
   @override
@@ -27,9 +25,9 @@ class GameTile extends StatelessWidget {
             ),
             child: Center(
               child: isOpen &&
-                      _existsBombsAround &&
-                      !viewModel.tiles[tileIndex].hasBomb
-                  ? Text("$neighborBombsCount")
+                      !viewModel.tiles[tileIndex].hasBomb &&
+                      viewModel.tiles[tileIndex].bombsAroundCount != 0
+                  ? Text("${viewModel.tiles[tileIndex].bombsAroundCount}")
                   : null,
             ),
           );
@@ -37,8 +35,6 @@ class GameTile extends StatelessWidget {
       ),
     );
   }
-
-  bool get _existsBombsAround => neighborBombsCount != 0;
 
   Color _getColor(bool isOpen, bool hasBomb) {
     if (!isOpen) {

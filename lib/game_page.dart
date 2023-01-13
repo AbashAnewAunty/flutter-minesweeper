@@ -41,14 +41,7 @@ class _GamePageState extends State<GamePage> {
                     crossAxisSpacing: 1,
                     children: List.generate(
                       viewModel.tiles.length,
-                      (index) {
-                        final int neighborBombsCount =
-                            viewModel.calculateBombsAroundCount(index);
-                        return GameTile(
-                          tileIndex: index,
-                          neighborBombsCount: neighborBombsCount,
-                        );
-                      },
+                      (index) => GameTile(tileIndex: index),
                     ),
                   ),
                 ),
