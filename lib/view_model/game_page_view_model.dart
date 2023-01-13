@@ -17,11 +17,19 @@ class GamePageViewModel extends ChangeNotifier {
   List<Tile> get tiles => _tiles;
 
   void onTapTileAt(int index) {
-    _openTile(index);
+    if (_tiles[index].hasBomb) {
+      _openTile(index);
+    } else {
+      _openSafeTilesAround(index);
+    }
     notifyListeners();
   }
 
-  void _openTile(int index) {
+  _openTile(int index){
+    _tiles[index].isOpen = true;
+  }
+
+  void _openSafeTilesAround(int index) {
     if (index.isNegative || index >= _tiles.length) {
       return;
     }
@@ -32,22 +40,20 @@ class GamePageViewModel extends ChangeNotifier {
       return;
     }
 
-    _tiles[index].isOpen = true;
+    _openTile(index);
 
     if (_tiles[index].bombsAroundCount != 0) {
       return;
     }
 
-    _openTile(index - 1);
-    _openTile(index + 1);
-    _openTile(index - _tileColumnCount);
-    _openTile(index + _tileColumnCount);
-    _openTile(index - _tileColumnCount - 1);
-    _openTile(index - _tileColumnCount + 1);
-    _openTile(index + _tileColumnCount - 1);
-    _openTile(index + _tileColumnCount + 1);
-
-    return;
+    _openSafeTilesAround(index - 1);
+    _openSafeTilesAround(index + 1);
+    _openSafeTilesAround(index - _tileColumnCount);
+    _openSafeTilesAround(index + _tileColumnCount);
+    _openSafeTilesAround(index - _tileColumnCount - 1);
+    _openSafeTilesAround(index - _tileColumnCount + 1);
+    _openSafeTilesAround(index + _tileColumnCount - 1);
+    _openSafeTilesAround(index + _tileColumnCount + 1);
   }
 
   void generateRandomList() {
