@@ -46,8 +46,6 @@ class GamePageViewModel extends ChangeNotifier {
     _openTile(index - _tileColumnCount + 1);
     _openTile(index + _tileColumnCount - 1);
     _openTile(index + _tileColumnCount + 1);
-
-    return;
   }
 
   void generateRandomList() {
