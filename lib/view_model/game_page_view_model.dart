@@ -21,20 +21,20 @@ class GamePageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _openTile(int index){
+  void _openTile(int index) {
     if (index.isNegative || index >= _tiles.length) {
       return;
     }
-    if(_tiles[index].hasBomb){
+    if (_tiles[index].hasBomb) {
       return;
     }
-    if(_tiles[index].isOpen){
+    if (_tiles[index].isOpen) {
       return;
     }
 
     _tiles[index].isOpen = true;
 
-    if(_tiles[index].bombsAroundCount != 0){
+    if (_tiles[index].bombsAroundCount != 0) {
       return;
     }
 
@@ -51,7 +51,7 @@ class GamePageViewModel extends ChangeNotifier {
     _tiles.clear();
     _tiles = List.generate(
       totalTileCount,
-          (index) {
+      (index) {
         if (index < _bombCount) {
           return Tile(hasBomb: true);
         } else {
@@ -60,165 +60,178 @@ class GamePageViewModel extends ChangeNotifier {
       },
     );
     _tiles.shuffle();
-    for(int i =0; i<_tiles.length; i++){
-      final int bombsAroundCount = calculateBombsAroundCount(i);
+    for (int i = 0; i < _tiles.length; i++) {
+      final int bombsAroundCount = _calculateBombsAroundCount(i);
       _tiles[i].bombsAroundCount = bombsAroundCount;
     }
   }
 
-  /// TODO: リファクタリング
-  int calculateBombsAroundCount(int tileIndex) {
+  int _calculateBombsAroundCount(int index) {
     int resultBombCount = 0;
-    if (tileIndex == 0) {
+    if (index == 0) {
       /// 左上
-      if (_tiles[tileIndex + 1].hasBomb) {
+      if (_rightHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
+      if (_downHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex + _tileColumnCount + 1].hasBomb) {
+      if (_rightHasBomb(index)) {
         resultBombCount++;
       }
       return resultBombCount;
-    } else if (tileIndex == _tileColumnCount - 1) {
+    } else if (index == _tileColumnCount - 1) {
       /// 右上
-      if (_tiles[tileIndex - 1].hasBomb) {
+      if (_leftHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
+      if (_downHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex + _tileColumnCount - 1].hasBomb) {
+      if (_leftDownHasBomb(index)) {
         resultBombCount++;
       }
       return resultBombCount;
-    } else if (tileIndex == _tileColumnCount * (_tileRowCount - 1)) {
+    } else if (index == _tileColumnCount * (_tileRowCount - 1)) {
       /// 左下
-      if (_tiles[tileIndex + 1].hasBomb) {
+      if (_rightHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
+      if (_topHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex - _tileColumnCount + 1].hasBomb) {
+      if (_rightTopHasBomb(index)) {
         resultBombCount++;
       }
       return resultBombCount;
-    } else if (tileIndex == _tileColumnCount * _tileRowCount - 1) {
+    } else if (index == _tileColumnCount * _tileRowCount - 1) {
       /// 右下
-      if (_tiles[tileIndex - 1].hasBomb) {
+      if (_leftHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
+      if (_topHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex - _tileColumnCount - 1].hasBomb) {
+      if (_leftTopHasBomb(index)) {
         resultBombCount++;
       }
       return resultBombCount;
-    } else if (tileIndex > 0 && tileIndex < _tileColumnCount - 1) {
+    } else if (index > 0 && index < _tileColumnCount - 1) {
       /// 上辺
-      if (_tiles[tileIndex - 1].hasBomb) {
+      if (_leftHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex + 1].hasBomb) {
+      if (_rightHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex + _tileColumnCount - 1].hasBomb) {
+      if (_leftDownHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
+      if (_downHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex + _tileColumnCount + 1].hasBomb) {
+      if (_rightDownHasBomb(index)) {
         resultBombCount++;
       }
       return resultBombCount;
-    } else if (tileIndex > _tileColumnCount * (_tileRowCount - 1) &&
-        tileIndex < _tileColumnCount * _tileRowCount - 1) {
+    } else if (index > _tileColumnCount * (_tileRowCount - 1) &&
+        index < _tileColumnCount * _tileRowCount - 1) {
       /// 下辺
-      if (_tiles[tileIndex - 1].hasBomb) {
+      if (_leftHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex + 1].hasBomb) {
+      if (_rightHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex - _tileColumnCount - 1].hasBomb) {
+      if (_leftTopHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
+      if (_topHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex - _tileColumnCount + 1].hasBomb) {
+      if (_rightTopHasBomb(index)) {
         resultBombCount++;
       }
       return resultBombCount;
-    } else if (tileIndex % _tileColumnCount == 0) {
+    } else if (index % _tileColumnCount == 0) {
       /// 左辺
-      if (_tiles[tileIndex + 1].hasBomb) {
+      if (_rightHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
+      if (_topHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex - _tileColumnCount + 1].hasBomb) {
+      if (_rightTopHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
+      if (_downHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex + _tileColumnCount + 1].hasBomb) {
+      if (_rightDownHasBomb(index)) {
         resultBombCount++;
       }
       return resultBombCount;
-    } else if ((tileIndex + 1) % _tileColumnCount == 0) {
+    } else if ((index + 1) % _tileColumnCount == 0) {
       /// 右辺
-      if (_tiles[tileIndex - 1].hasBomb) {
+      if (_leftHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
+      if (_topHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex - _tileColumnCount - 1].hasBomb) {
+      if (_leftTopHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
+      if (_downHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex + _tileColumnCount - 1].hasBomb) {
+      if (_leftDownHasBomb(index)) {
         resultBombCount++;
       }
       return resultBombCount;
     } else {
       /// その他
-      if (_tiles[tileIndex + 1].hasBomb) {
+      if (_rightHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex - 1].hasBomb) {
+      if (_leftHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex - _tileColumnCount].hasBomb) {
+      if (_topHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex - _tileColumnCount - 1].hasBomb) {
+      if (_leftTopHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex - _tileColumnCount + 1].hasBomb) {
+      if (_rightTopHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex + _tileColumnCount].hasBomb) {
+      if (_downHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex + _tileColumnCount - 1].hasBomb) {
+      if (_leftDownHasBomb(index)) {
         resultBombCount++;
       }
-      if (_tiles[tileIndex + _tileColumnCount + 1].hasBomb) {
+      if (_rightDownHasBomb(index)) {
         resultBombCount++;
       }
       return resultBombCount;
     }
   }
 
+  _leftHasBomb(int index) => _tiles[index - 1].hasBomb;
 
+  _topHasBomb(int index) => _tiles[index - _tileColumnCount].hasBomb;
+
+  _rightHasBomb(int index) => _tiles[index + 1].hasBomb;
+
+  _downHasBomb(int index) => _tiles[index + _tileColumnCount].hasBomb;
+
+  _leftTopHasBomb(int index) => _tiles[index - _tileColumnCount - 1].hasBomb;
+
+  _rightTopHasBomb(int index) => _tiles[index - _tileColumnCount + 1].hasBomb;
+
+  _rightDownHasBomb(int index) => _tiles[index + _tileColumnCount + 1].hasBomb;
+
+  _leftDownHasBomb(int index) => _tiles[index + _tileColumnCount - 1].hasBomb;
 }
