@@ -5,7 +5,7 @@ import '../model/tile.dart';
 class GamePageViewModel extends ChangeNotifier {
   static const int _tileRowCount = 18;
   static const int _tileColumnCount = 11;
-  static const int _bombCount = 35;
+  static const int _bombCount = 25;
   List<Tile> _tiles = [];
 
   int get tileRowCount => _tileRowCount;

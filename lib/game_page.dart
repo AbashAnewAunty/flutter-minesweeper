@@ -35,7 +35,9 @@ class _GamePageState extends State<GamePage> {
                   child: GridView.count(
                     crossAxisCount: viewModel.tileColumnCount,
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 20),
+                      horizontal: 15,
+                      vertical: 20,
+                    ),
                     physics: const NeverScrollableScrollPhysics(),
                     mainAxisSpacing: 1,
                     crossAxisSpacing: 1,
@@ -55,16 +57,14 @@ class _GamePageState extends State<GamePage> {
 
   Widget _tempAppbar() {
     return AppBar(
+      backgroundColor: Colors.blueGrey,
       title: Row(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: const [
-          SizedBox(
-            width: 20,
-            child: Icon(Icons.lock_clock),
-          ),
+          Icon(Icons.access_time),
           SizedBox(width: 10),
           Text("00:10:99"),
-          SizedBox(width: 60),
         ],
       ),
     );
