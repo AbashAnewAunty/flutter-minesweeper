@@ -24,6 +24,17 @@ class GamePageViewModel extends ChangeNotifier {
 
   GameState get state => _state;
 
+  set state(GameState value) {
+    _state = value;
+    notifyListeners();
+  }
+
+  void reset(){
+    _tiles = List.generate(_tileColumnCount * _tileRowCount, (index) => Tile(hasBomb: false));
+    _state = GameState.beforeGame;
+    notifyListeners();
+  }
+
   void openTile(int index) {
 
     if(_state == GameState.beforeGame){
