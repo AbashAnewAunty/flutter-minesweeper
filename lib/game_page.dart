@@ -4,20 +4,8 @@ import 'package:provider/provider.dart';
 
 import 'game_tile.dart';
 
-class GamePage extends StatefulWidget {
+class GamePage extends StatelessWidget {
   const GamePage({super.key});
-
-  @override
-  State<GamePage> createState() => _GamePageState();
-}
-
-class _GamePageState extends State<GamePage> {
-  @override
-  void initState() {
-    super.initState();
-    final viewModel = context.read<GamePageViewModel>();
-    viewModel.generateRandomList();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +30,7 @@ class _GamePageState extends State<GamePage> {
                     mainAxisSpacing: 1,
                     crossAxisSpacing: 1,
                     children: List.generate(
-                      viewModel.tiles.length,
+                      viewModel.tileCount,
                       (index) => GameTile(tileIndex: index),
                     ),
                   ),
