@@ -66,15 +66,6 @@ class GamePage extends StatelessWidget {
   Widget _tempAppbar() {
     return AppBar(
       backgroundColor: Colors.blueGrey,
-      leading: Builder(builder: (context) {
-        return GestureDetector(
-          onTap: () {
-            final viewModel = context.read<GamePageViewModel>();
-            viewModel.state = GameState.beforeGame;
-          },
-          child: const Icon(Icons.arrow_back_ios),
-        );
-      }),
       title: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
