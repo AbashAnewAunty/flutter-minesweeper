@@ -4,18 +4,8 @@ import 'package:provider/provider.dart';
 
 import 'game_tile.dart';
 
-class GamePage extends StatefulWidget {
+class GamePage extends StatelessWidget {
   const GamePage({super.key});
-
-  @override
-  State<GamePage> createState() => _GamePageState();
-}
-
-class _GamePageState extends State<GamePage> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
