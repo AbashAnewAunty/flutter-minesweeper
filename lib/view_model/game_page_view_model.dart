@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:minesweeper/constant.dart';
 
 import '../model/tile.dart';
@@ -37,6 +38,7 @@ class GamePageViewModel extends ChangeNotifier {
 
     if (_tiles[index].hasBomb) {
       _openSingleTile(index);
+      HapticFeedback.heavyImpact();
       _state = GameState.beforeGame;
     } else {
       _openSafeTilesAround(index);
@@ -54,6 +56,7 @@ class GamePageViewModel extends ChangeNotifier {
       return;
     }
     _tiles[index].hasFlag = !_tiles[index].hasFlag;
+    HapticFeedback.mediumImpact();
     notifyListeners();
   }
 
