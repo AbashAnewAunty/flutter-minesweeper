@@ -15,8 +15,6 @@ class _GamePageState extends State<GamePage> {
   @override
   void initState() {
     super.initState();
-    final viewModel = context.read<GamePageViewModel>();
-    viewModel.generateRandomList();
   }
 
   @override
@@ -42,7 +40,7 @@ class _GamePageState extends State<GamePage> {
                     mainAxisSpacing: 1,
                     crossAxisSpacing: 1,
                     children: List.generate(
-                      viewModel.tiles.length,
+                      viewModel.tileCount,
                       (index) => GameTile(tileIndex: index),
                     ),
                   ),

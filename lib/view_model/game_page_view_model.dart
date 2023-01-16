@@ -1,28 +1,52 @@
 import 'package:flutter/cupertino.dart';
+import 'package:minesweeper/constant.dart';
 
 import '../model/tile.dart';
 
 class GamePageViewModel extends ChangeNotifier {
   static const int _tileRowCount = 18;
   static const int _tileColumnCount = 11;
-  static const int _bombCount = 25;
-  List<Tile> _tiles = [];
+  static const int _bombCount = 35;
+  List<Tile> _tiles = List.generate(_tileColumnCount * _tileRowCount, (index) => Tile(hasBomb: false));
 
   int get tileRowCount => _tileRowCount;
 
   int get tileColumnCount => _tileColumnCount;
 
+  int get tileCount => _tileColumnCount * _tileRowCount;
+
   int get bombCount => _bombCount;
 
   List<Tile> get tiles => _tiles;
 
+  GameState _state = GameState.beforeGame;
+
+  GameState get state => _state;
+
   void openTile(int index) {
+
+    if(_state == GameState.beforeGame){
+      _state = GameState.isPlaying;
+      generateRandomList();
+      _tiles.shuffle();
+      while(existSomethingAt(index)){
+        _tiles.shuffle();
+      }
+      setBombsAroundCount();
+    }
+
     if (_tiles[index].hasBomb) {
       _openSingleTile(index);
+      _state = GameState.beforeGame;
     } else {
       _openSafeTilesAround(index);
     }
     notifyListeners();
+  }
+
+  bool existSomethingAt(int index){
+    assert(index > 0 && index < tileCount);
+    return _tiles[index].hasBomb || _calculateBombsAroundCount(index) != 0;
   }
 
   void toggleFlag(int index) {
@@ -83,7 +107,9 @@ class GamePageViewModel extends ChangeNotifier {
         }
       },
     );
-    _tiles.shuffle();
+  }
+
+  void setBombsAroundCount(){
     for (int i = 0; i < _tiles.length; i++) {
       final int bombsAroundCount = _calculateBombsAroundCount(i);
       _tiles[i].bombsAroundCount = bombsAroundCount;
