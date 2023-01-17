@@ -37,6 +37,10 @@ class GamePageViewModel extends ChangeNotifier {
 
   void openTile(int index) {
 
+    if(_state == GameState.gameOver || _state == GameState.gameClear){
+      return;
+    }
+
     if(_state == GameState.beforeGame){
       _state = GameState.isPlaying;
       generateRandomList();
@@ -50,7 +54,7 @@ class GamePageViewModel extends ChangeNotifier {
     if (_tiles[index].hasBomb) {
       _openSingleTile(index);
       HapticFeedback.heavyImpact();
-      _state = GameState.beforeGame;
+      _state = GameState.gameOver;
     } else {
       _openSafeTilesAround(index);
     }
