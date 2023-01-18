@@ -22,32 +22,33 @@ class GamePage extends StatelessWidget {
               Expanded(
                 child: Center(
                   child: Selector<GamePageViewModel, GameState>(
-                      selector: (context, viewModel) => viewModel.state,
-                      shouldRebuild: (oldState, newState) {
-                        if (oldState == GameState.isPlaying &&
-                            newState == GameState.beforeGame) {
-                          viewModel.reset();
-                          return true;
-                        } else {
-                          return false;
-                        }
-                      },
-                      builder: (context, state, child) {
-                        return GridView.count(
-                          crossAxisCount: viewModel.tileColumnCount,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 20,
-                          ),
-                          physics: const NeverScrollableScrollPhysics(),
-                          mainAxisSpacing: 1,
-                          crossAxisSpacing: 1,
-                          children: List.generate(
-                            viewModel.tileCount,
-                            (index) => GameTile(tileIndex: index),
-                          ),
-                        );
-                      }),
+                    selector: (context, viewModel) => viewModel.state,
+                    shouldRebuild: (oldState, newState) {
+                      if (oldState == GameState.isPlaying &&
+                          newState == GameState.beforeGame) {
+                        viewModel.reset();
+                        return true;
+                      } else {
+                        return false;
+                      }
+                    },
+                    builder: (context, state, child) {
+                      return GridView.count(
+                        crossAxisCount: viewModel.tileColumnCount,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 20,
+                        ),
+                        physics: const NeverScrollableScrollPhysics(),
+                        mainAxisSpacing: 1,
+                        crossAxisSpacing: 1,
+                        children: List.generate(
+                          viewModel.tileCount,
+                          (index) => GameTile(tileIndex: index),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
               ElevatedButton(
