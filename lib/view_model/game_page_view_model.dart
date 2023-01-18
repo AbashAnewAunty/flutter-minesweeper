@@ -107,7 +107,7 @@ class GamePageViewModel extends ChangeNotifier {
     _tiles[index].hasFlag = !_tiles[index].hasFlag;
     if (_tiles[index].hasFlag) {
       _flagCount--;
-      assert(_flagCount >= 0);
+      assert(_flagCount >= -tileCount + _bombCount);
     } else {
       _flagCount++;
       assert(_flagCount <= _bombCount);
