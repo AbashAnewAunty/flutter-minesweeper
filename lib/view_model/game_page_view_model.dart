@@ -25,15 +25,34 @@ class GamePageViewModel extends ChangeNotifier {
 
   GameState get state => _state;
 
+  final Stopwatch _stopwatch = Stopwatch();
+
+  Duration _now = Duration(seconds: 0);
+
+  Duration get now => _now;
+
+  bool _isWatchingTimer = false;
+
   set state(GameState value) {
     _state = value;
     notifyListeners();
+  }
+
+  Future<void> _startWatchingTimer() async {
+    while (_isWatchingTimer) {
+      await Future.delayed(const Duration(milliseconds: 100));
+      _now = _stopwatch.elapsed;
+      notifyListeners();
+    }
   }
 
   void reset() {
     _tiles = List.generate(
         _tileColumnCount * _tileRowCount, (index) => Tile(hasBomb: false));
     _state = GameState.beforeGame;
+    _isWatchingTimer = false;
+    _stopwatch.reset();
+    _now = const Duration(seconds: 0);
     notifyListeners();
   }
 
@@ -50,6 +69,9 @@ class GamePageViewModel extends ChangeNotifier {
         _tiles.shuffle();
       }
       setBombsAroundCount();
+      _stopwatch.start();
+      _isWatchingTimer = true;
+      _startWatchingTimer();
     }
 
     if (_tiles[index].hasFlag) {
@@ -58,6 +80,8 @@ class GamePageViewModel extends ChangeNotifier {
 
     if (_tiles[index].hasBomb) {
       _openSingleTile(index);
+      _stopwatch.stop();
+      _isWatchingTimer = false;
       HapticFeedback.heavyImpact();
       _state = GameState.gameOver;
     } else {
