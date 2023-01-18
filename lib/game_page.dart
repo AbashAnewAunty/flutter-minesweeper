@@ -67,10 +67,16 @@ class GamePage extends StatelessWidget {
       title: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Icon(Icons.access_time),
-          SizedBox(width: 10),
-          Text("00:10:99"),
+        children: [
+          const Icon(Icons.access_time),
+          const SizedBox(width: 10),
+          Selector<GamePageViewModel, Duration>(
+            selector: (context, viewModel) => viewModel.now,
+            builder: (context, elapsed, child) {
+              return Text(
+                  "${elapsed.inHours}:${(elapsed.inMinutes % 60).toString().padLeft(2, "0")}:${(elapsed.inSeconds % 60).toString().padLeft(2, "0")}");
+            },
+          ),
         ],
       ),
     );
