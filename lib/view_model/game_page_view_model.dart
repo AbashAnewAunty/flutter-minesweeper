@@ -8,7 +8,8 @@ class GamePageViewModel extends ChangeNotifier {
   static const int _tileRowCount = 18;
   static const int _tileColumnCount = 11;
   static const int _bombCount = 35;
-  List<Tile> _tiles = List.generate(_tileColumnCount * _tileRowCount, (index) => Tile(hasBomb: false));
+  List<Tile> _tiles = List.generate(
+      _tileColumnCount * _tileRowCount, (index) => Tile(hasBomb: false));
 
   int get tileRowCount => _tileRowCount;
 
@@ -29,23 +30,23 @@ class GamePageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void reset(){
-    _tiles = List.generate(_tileColumnCount * _tileRowCount, (index) => Tile(hasBomb: false));
+  void reset() {
+    _tiles = List.generate(
+        _tileColumnCount * _tileRowCount, (index) => Tile(hasBomb: false));
     _state = GameState.beforeGame;
     notifyListeners();
   }
 
   void openTile(int index) {
-
-    if(_state == GameState.gameOver || _state == GameState.gameClear){
+    if (_state == GameState.gameOver || _state == GameState.gameClear) {
       return;
     }
 
-    if(_state == GameState.beforeGame){
+    if (_state == GameState.beforeGame) {
       _state = GameState.isPlaying;
       generateRandomList();
       _tiles.shuffle();
-      while(existSomethingAt(index)){
+      while (existSomethingAt(index)) {
         _tiles.shuffle();
       }
       setBombsAroundCount();
@@ -65,7 +66,7 @@ class GamePageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool existSomethingAt(int index){
+  bool existSomethingAt(int index) {
     assert(index > 0 && index < tileCount);
     return _tiles[index].hasBomb || _calculateBombsAroundCount(index) != 0;
   }
@@ -80,7 +81,7 @@ class GamePageViewModel extends ChangeNotifier {
   }
 
   void _openSingleTile(int index) {
-    if(_tiles[index].hasFlag){
+    if (_tiles[index].hasFlag) {
       return;
     }
     _tiles[index].isOpen = true;
@@ -131,7 +132,7 @@ class GamePageViewModel extends ChangeNotifier {
     );
   }
 
-  void setBombsAroundCount(){
+  void setBombsAroundCount() {
     for (int i = 0; i < _tiles.length; i++) {
       final int bombsAroundCount = _calculateBombsAroundCount(i);
       _tiles[i].bombsAroundCount = bombsAroundCount;

@@ -26,9 +26,7 @@ class StartPage extends StatelessWidget {
   Widget _quickPlayButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () => Navigator.of(context).pushNamed("/game"),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blueGrey
-      ),
+      style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
       child: const Text("Quick Play"),
     );
   }

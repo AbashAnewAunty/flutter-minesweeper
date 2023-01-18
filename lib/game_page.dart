@@ -51,9 +51,7 @@ class GamePage extends StatelessWidget {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {
-                  viewModel.reset();
-                },
+                onPressed: () => viewModel.reset(),
                 child: const Text("reset"),
               ),
             ],
