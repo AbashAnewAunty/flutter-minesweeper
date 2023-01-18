@@ -51,6 +51,10 @@ class GamePageViewModel extends ChangeNotifier {
       setBombsAroundCount();
     }
 
+    if (_tiles[index].hasFlag) {
+      return;
+    }
+
     if (_tiles[index].hasBomb) {
       _openSingleTile(index);
       HapticFeedback.heavyImpact();
