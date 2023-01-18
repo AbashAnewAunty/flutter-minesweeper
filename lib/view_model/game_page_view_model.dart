@@ -27,7 +27,7 @@ class GamePageViewModel extends ChangeNotifier {
 
   final Stopwatch _stopwatch = Stopwatch();
 
-  Duration _now = Duration(seconds: 0);
+  Duration _now = const Duration(seconds: 0);
 
   Duration get now => _now;
 
