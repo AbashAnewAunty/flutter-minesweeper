@@ -68,8 +68,17 @@ class GamePage extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.access_time),
+          const Icon(Icons.flag),
+          const SizedBox(width: 5),
+          Selector<GamePageViewModel, int>(
+            selector: (context, viewModel) => viewModel.flagCount,
+            builder: (context, flagCount, child) {
+              return Text("$flagCount");
+            },
+          ),
           const SizedBox(width: 10),
+          const Icon(Icons.access_time),
+          const SizedBox(width: 5),
           Selector<GamePageViewModel, Duration>(
             selector: (context, viewModel) => viewModel.now,
             builder: (context, elapsed, child) {

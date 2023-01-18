@@ -25,6 +25,8 @@ class GamePageViewModel extends ChangeNotifier {
 
   GameState get state => _state;
 
+  int _flagCount = _bombCount;
+
   final Stopwatch _stopwatch = Stopwatch();
 
   Duration _now = const Duration(seconds: 0);
@@ -32,6 +34,8 @@ class GamePageViewModel extends ChangeNotifier {
   Duration get now => _now;
 
   bool _isWatchingTimer = false;
+
+  int get flagCount => _flagCount;
 
   set state(GameState value) {
     _state = value;
@@ -53,6 +57,7 @@ class GamePageViewModel extends ChangeNotifier {
     _isWatchingTimer = false;
     _stopwatch.reset();
     _now = const Duration(seconds: 0);
+    _flagCount = _bombCount;
     notifyListeners();
   }
 
@@ -100,6 +105,13 @@ class GamePageViewModel extends ChangeNotifier {
       return;
     }
     _tiles[index].hasFlag = !_tiles[index].hasFlag;
+    if (_tiles[index].hasFlag) {
+      _flagCount--;
+      assert(_flagCount >= 0);
+    } else {
+      _flagCount++;
+      assert(_flagCount <= _bombCount);
+    }
     HapticFeedback.mediumImpact();
     notifyListeners();
   }
