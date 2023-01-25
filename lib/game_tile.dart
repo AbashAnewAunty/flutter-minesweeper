@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:minesweeper/constant.dart';
+import 'package:minesweeper/game_dialog.dart';
 import 'package:minesweeper/view_model/game_page_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +16,21 @@ class GameTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<GamePageViewModel>();
     return GestureDetector(
-      onTap: () => viewModel.openTile(tileIndex),
+      onTap: () {
+        viewModel.openTile(tileIndex);
+        final state = viewModel.state;
+        if (state == GameState.gameOver) {
+          showDialog(
+            context: context,
+            builder: (context) => const GameOverDialog(),
+          );
+        } else if (state == GameState.gameClear) {
+          showDialog(
+            context: context,
+            builder: (context) => const GameClearDialog(),
+          );
+        }
+      },
       onLongPress: () => viewModel.toggleFlag(tileIndex),
       child: Selector<GamePageViewModel, bool>(
         selector: (context, viewModel) => viewModel.tiles[tileIndex].isOpen,

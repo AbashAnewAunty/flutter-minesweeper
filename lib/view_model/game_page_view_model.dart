@@ -92,6 +92,14 @@ class GamePageViewModel extends ChangeNotifier {
     } else {
       _openSafeTilesAround(index);
     }
+
+    if (_tiles.where((tile) => tile.isOpen).length ==
+        _tiles.length - _bombCount) {
+      _stopwatch.stop();
+      _isWatchingTimer = false;
+      _state = GameState.gameClear;
+    }
+
     notifyListeners();
   }
 
