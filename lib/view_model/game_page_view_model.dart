@@ -151,14 +151,30 @@ class GamePageViewModel extends ChangeNotifier {
       return;
     }
 
-    _openSafeTilesAround(index - 1);
-    _openSafeTilesAround(index + 1);
-    _openSafeTilesAround(index - _tileColumnCount);
-    _openSafeTilesAround(index + _tileColumnCount);
-    _openSafeTilesAround(index - _tileColumnCount - 1);
-    _openSafeTilesAround(index - _tileColumnCount + 1);
-    _openSafeTilesAround(index + _tileColumnCount - 1);
-    _openSafeTilesAround(index + _tileColumnCount + 1);
+    if (!_isLeftSide(index)) {
+      _openSafeTilesAround(index - 1);
+    }
+    if (!_isRightSide(index)) {
+      _openSafeTilesAround(index + 1);
+    }
+    if (!_isBottomSide(index)) {
+      _openSafeTilesAround(index - _tileColumnCount);
+    }
+    if (!_isTopSide(index)) {
+      _openSafeTilesAround(index + _tileColumnCount);
+    }
+    if (!(_isLeftSide(index) || _isTopSide(index))) {
+      _openSafeTilesAround(index - _tileColumnCount - 1);
+    }
+    if (!(_isRightSide(index) || _isTopSide(index))) {
+      _openSafeTilesAround(index - _tileColumnCount + 1);
+    }
+    if (!(_isLeftSide(index) || !_isBottomSide(index))) {
+      _openSafeTilesAround(index + _tileColumnCount - 1);
+    }
+    if (!(_isRightSide(index) || !_isBottomSide(index))) {
+      _openSafeTilesAround(index + _tileColumnCount + 1);
+    }
   }
 
   void generateRandomList() {
@@ -233,8 +249,7 @@ class GamePageViewModel extends ChangeNotifier {
         resultBombCount++;
       }
       return resultBombCount;
-    } else if (index > 0 && index < _tileColumnCount - 1) {
-      /// 上辺
+    } else if (_isTopSide(index)) {
       if (_leftHasBomb(index)) {
         resultBombCount++;
       }
@@ -251,9 +266,7 @@ class GamePageViewModel extends ChangeNotifier {
         resultBombCount++;
       }
       return resultBombCount;
-    } else if (index > _tileColumnCount * (_tileRowCount - 1) &&
-        index < _tileColumnCount * _tileRowCount - 1) {
-      /// 下辺
+    } else if (_isBottomSide(index)) {
       if (_leftHasBomb(index)) {
         resultBombCount++;
       }
@@ -270,8 +283,7 @@ class GamePageViewModel extends ChangeNotifier {
         resultBombCount++;
       }
       return resultBombCount;
-    } else if (index % _tileColumnCount == 0) {
-      /// 左辺
+    } else if (_isLeftSide(index)) {
       if (_rightHasBomb(index)) {
         resultBombCount++;
       }
@@ -288,8 +300,7 @@ class GamePageViewModel extends ChangeNotifier {
         resultBombCount++;
       }
       return resultBombCount;
-    } else if ((index + 1) % _tileColumnCount == 0) {
-      /// 右辺
+    } else if (_isRightSide(index)) {
       if (_leftHasBomb(index)) {
         resultBombCount++;
       }
@@ -335,6 +346,20 @@ class GamePageViewModel extends ChangeNotifier {
       return resultBombCount;
     }
   }
+
+  /// 左辺のタイルである
+  _isLeftSide(int index) => index % _tileColumnCount == 0;
+
+  /// 右辺のタイルである
+  _isRightSide(int index) => (index + 1) % _tileColumnCount == 0;
+
+  /// 上辺のタイルである
+  _isTopSide(int index) => index > 0 && index < _tileColumnCount - 1;
+
+  /// 下辺のタイルである
+  _isBottomSide(int index) =>
+      index > _tileColumnCount * (_tileRowCount - 1) &&
+      index < _tileColumnCount * _tileRowCount - 1;
 
   _leftHasBomb(int index) => _tiles[index - 1].hasBomb;
 
