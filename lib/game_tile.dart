@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:minesweeper/constant.dart';
 import 'package:minesweeper/game_dialog.dart';
 import 'package:minesweeper/view_model/game_page_view_model.dart';
@@ -20,13 +21,19 @@ class GameTile extends StatelessWidget {
         viewModel.openTile(tileIndex);
         final state = viewModel.state;
         if (state == GameState.gameOver) {
-          showDialog(
+          showAnimatedDialog(
             context: context,
+            animationType: DialogTransitionType.slideFromTop,
+            curve: Curves.bounceOut,
+            duration: const Duration(milliseconds: 900),
             builder: (context) => const GameOverDialog(),
           );
         } else if (state == GameState.gameClear) {
-          showDialog(
+          showAnimatedDialog(
             context: context,
+            animationType: DialogTransitionType.scale,
+            curve: Curves.easeIn,
+            duration: const Duration(milliseconds: 750),
             builder: (context) => const GameClearDialog(),
           );
         }
