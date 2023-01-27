@@ -169,10 +169,10 @@ class GamePageViewModel extends ChangeNotifier {
     if (!(_isRightSide(index) || _isTopSide(index))) {
       _openSafeTilesAround(index - _tileColumnCount + 1);
     }
-    if (!(_isLeftSide(index) || !_isBottomSide(index))) {
+    if (!(_isLeftSide(index) || _isBottomSide(index))) {
       _openSafeTilesAround(index + _tileColumnCount - 1);
     }
-    if (!(_isRightSide(index) || !_isBottomSide(index))) {
+    if (!(_isRightSide(index) || _isBottomSide(index))) {
       _openSafeTilesAround(index + _tileColumnCount + 1);
     }
   }
