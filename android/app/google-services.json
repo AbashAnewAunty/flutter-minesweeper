@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "641871048211",
+    "project_id": "zebra-minesweeper",
+    "storage_bucket": "zebra-minesweeper.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641871048211:android:7d9b8514dd86617628d9e6",
+        "android_client_info": {
+          "package_name": "xyz.zebracrypto.minesweeper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "641871048211-6728mpm33mor81kci5cug6qu1e538jl3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFAi3Dpvc4gE6aJJnsiXJeVI4MbSJSYos"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "641871048211-6728mpm33mor81kci5cug6qu1e538jl3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "641871048211-5ssi71jica98edao7j2q0jqikkg3evoe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "xyz.zebracrypto.minesweeper"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minesweeper/constant.dart';
+import 'package:minesweeper/utils/analytics.dart';
 import 'package:minesweeper/view_model/game_page_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ class GamePage extends StatelessWidget {
           color: Colors.grey,
           child: Column(
             children: [
-              _tempAppbar(),
+              _tempAppbar(context),
               Expanded(
                 child: Center(
                   child: Selector<GamePageViewModel, GameState>(
@@ -62,9 +63,19 @@ class GamePage extends StatelessWidget {
     );
   }
 
-  Widget _tempAppbar() {
+  Widget _tempAppbar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.blueGrey,
+      leading: GestureDetector(
+        onTap: () {
+          logScreenView(screenName: "Start");
+          Navigator.of(context).pop();
+        },
+        child: Container(
+          color: Colors.red,
+          child: Icon(Icons.arrow_back_ios),
+        ),
+      ),
       title: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
