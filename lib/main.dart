@@ -1,10 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:minesweeper/game_page.dart';
 import 'package:minesweeper/start_page.dart';
+import 'package:minesweeper/utils/analytics.dart';
 import 'package:minesweeper/view_model/game_page_view_model.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     MultiProvider(
       providers: [
@@ -28,8 +36,14 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: "/",
       routes: {
-        "/": (context) => const StartPage(),
-        "/game": (context) => const GamePage(),
+        "/": (context) {
+          logScreenView(screenName: "Start");
+          return const StartPage();
+        },
+        "/game": (context) {
+          logScreenView(screenName: "Game");
+          return const GamePage();
+        },
       },
     );
   }
