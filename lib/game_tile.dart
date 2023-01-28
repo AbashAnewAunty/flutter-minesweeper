@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:minesweeper/constant.dart';
 import 'package:minesweeper/game_dialog.dart';
+import 'package:minesweeper/view_common/custom_long_press_gesture_detector.dart';
 import 'package:minesweeper/view_model/game_page_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +17,7 @@ class GameTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<GamePageViewModel>();
-    return GestureDetector(
+    return CustomLongPressGestureDetector(
       onTap: () {
         viewModel.openTile(tileIndex);
         final state = viewModel.state;
