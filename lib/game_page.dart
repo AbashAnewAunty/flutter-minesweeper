@@ -71,10 +71,7 @@ class GamePage extends StatelessWidget {
           logScreenView(screenName: "Start");
           Navigator.of(context).pop();
         },
-        child: Container(
-          color: Colors.red,
-          child: Icon(Icons.arrow_back_ios),
-        ),
+        child: const Icon(Icons.arrow_back_ios),
       ),
       title: Row(
         mainAxisSize: MainAxisSize.min,
