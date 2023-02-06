@@ -4,3 +4,9 @@ enum GameState {
   gameClear,
   gameOver,
 }
+
+enum Difficulty {
+  easy,
+  normal,
+  hard,
+}
