@@ -1,10 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:minesweeper/constant.dart';
+import 'package:minesweeper/manager/prefs_manager.dart';
 
 import '../model/tile.dart';
 
 class GamePageViewModel extends ChangeNotifier {
+  late final PrefsManager _prefsManager;
+
+  GamePageViewModel({required PrefsManager prefsManager}) {
+    _prefsManager = prefsManager;
+  }
+
   static const int _tileRowCount = 18;
   static const int _tileColumnCount = 11;
   static const int _bombCount = 35;
