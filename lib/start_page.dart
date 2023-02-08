@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:minesweeper/constant.dart';
+import 'package:minesweeper/view_model/game_page_view_model.dart';
 import 'package:minesweeper/view_model/start_page_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -41,11 +42,13 @@ class _StartPageState extends State<StartPage> {
                 buttons: const ["easy", "normal", "hard"],
                 controller: _groupButtonController,
                 onSelected: (text, index, isSelected) async {
-                  final viewModel = context.read<StartPageViewModel>();
+                  final startPageViewModel = context.read<StartPageViewModel>();
+                  final gamePageViewModel = context.read<GamePageViewModel>();
                   final Difficulty difficulty =
                       Difficulty.values.toList().elementAt(index);
                   print(difficulty);
-                  await viewModel.setDifficulty(difficulty);
+                  await startPageViewModel.setDifficulty(difficulty);
+                  await gamePageViewModel.updateDifficulty();
                 },
                 buttonBuilder: (isSelected, text, context) {
                   return Container(
