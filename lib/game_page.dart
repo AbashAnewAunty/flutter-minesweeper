@@ -3,6 +3,7 @@ import 'package:minesweeper/constant.dart';
 import 'package:minesweeper/utils/analytics.dart';
 import 'package:minesweeper/view_model/game_page_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:tuple/tuple.dart';
 
 import 'game_tile.dart';
 
@@ -22,8 +23,10 @@ class GamePage extends StatelessWidget {
               _tempAppbar(context),
               Expanded(
                 child: Center(
-                  child: Selector<GamePageViewModel, GameState>(
-                    selector: (context, viewModel) => viewModel.state,
+                  child: Selector<GamePageViewModel,
+                      Tuple2<GameState, Difficulty>>(
+                    selector: (context, viewModel) =>
+                        Tuple2(viewModel.state, viewModel.difficulty),
                     shouldRebuild: (oldState, newState) {
                       if (oldState == GameState.isPlaying &&
                           newState == GameState.beforeGame) {

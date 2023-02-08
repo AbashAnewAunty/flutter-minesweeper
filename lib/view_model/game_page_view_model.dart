@@ -1,15 +1,56 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:minesweeper/constant.dart';
+import 'package:minesweeper/manager/prefs_manager.dart';
 
+import '../model/field.dart';
 import '../model/tile.dart';
 
 class GamePageViewModel extends ChangeNotifier {
-  static const int _tileRowCount = 18;
-  static const int _tileColumnCount = 11;
-  static const int _bombCount = 35;
-  List<Tile> _tiles = List.generate(
-      _tileColumnCount * _tileRowCount, (index) => Tile(hasBomb: false));
+  late final PrefsManager _prefsManager;
+
+  GamePageViewModel({required PrefsManager prefsManager}) {
+    _prefsManager = prefsManager;
+  }
+
+  Difficulty _difficulty = Difficulty.normal;
+
+  Difficulty get difficulty => _difficulty;
+
+  Future<void> updateDifficulty() async {
+    _difficulty = await _prefsManager.getDifficulty();
+    final map = {
+      Difficulty.easy: Field(
+        row: 10,
+        column: 10,
+        bombCount: 10,
+      ),
+      Difficulty.normal: Field(
+        row: 18,
+        column: 11,
+        bombCount: 35,
+      ),
+      Difficulty.hard: Field(
+        row: 20,
+        column: 12,
+        bombCount: 50,
+      ),
+    };
+    final field = map[_difficulty] ?? Field(row: 1, column: 1, bombCount: 1);
+    _tileRowCount = field.row;
+    _tileColumnCount = field.column;
+    _bombCount = field.bombCount;
+    _flagCount = _bombCount;
+    _tiles.clear();
+    _tiles = List.generate(
+        _tileColumnCount * _tileRowCount, (index) => Tile(hasBomb: false));
+    notifyListeners();
+  }
+
+  int _tileRowCount = 1;
+  int _tileColumnCount = 1;
+  int _bombCount = 1;
+  List<Tile> _tiles = [];
 
   int get tileRowCount => _tileRowCount;
 
@@ -25,7 +66,7 @@ class GamePageViewModel extends ChangeNotifier {
 
   GameState get state => _state;
 
-  int _flagCount = _bombCount;
+  int _flagCount = 1;
 
   final Stopwatch _stopwatch = Stopwatch();
 
@@ -178,7 +219,7 @@ class GamePageViewModel extends ChangeNotifier {
   }
 
   void generateRandomList() {
-    const int totalTileCount = _tileColumnCount * _tileRowCount;
+    int totalTileCount = _tileColumnCount * _tileRowCount;
     _tiles.clear();
     _tiles = List.generate(
       totalTileCount,
