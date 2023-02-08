@@ -43,7 +43,6 @@ class GamePageViewModel extends ChangeNotifier {
     _flagCount = _bombCount;
     _tiles.clear();
     reset();
-    notifyListeners();
   }
 
   int _tileRowCount = 1;
@@ -96,6 +95,7 @@ class GamePageViewModel extends ChangeNotifier {
     _state = GameState.beforeGame;
     _isWatchingTimer = false;
     _stopwatch.reset();
+    _stopwatch.stop();
     _now = const Duration(seconds: 0);
     _flagCount = _bombCount;
     notifyListeners();
