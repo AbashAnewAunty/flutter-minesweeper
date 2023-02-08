@@ -42,8 +42,7 @@ class GamePageViewModel extends ChangeNotifier {
     _bombCount = field.bombCount;
     _flagCount = _bombCount;
     _tiles.clear();
-    _tiles = List.generate(
-        _tileColumnCount * _tileRowCount, (index) => Tile(hasBomb: false));
+    reset();
     notifyListeners();
   }
 
