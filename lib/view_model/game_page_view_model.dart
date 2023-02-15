@@ -89,6 +89,11 @@ class GamePageViewModel extends ChangeNotifier {
     }
   }
 
+  /// 全タイルを
+  /// ・ボムなし
+  /// ・閉じている状態
+  /// にする
+  /// タイマーをリセット
   void reset() {
     _tiles = List.generate(
         _tileColumnCount * _tileRowCount, (index) => Tile(hasBomb: false));

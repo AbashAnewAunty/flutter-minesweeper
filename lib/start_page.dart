@@ -46,7 +46,6 @@ class _StartPageState extends State<StartPage> {
                   final gamePageViewModel = context.read<GamePageViewModel>();
                   final Difficulty difficulty =
                       Difficulty.values.toList().elementAt(index);
-                  print(difficulty);
                   await startPageViewModel.setDifficulty(difficulty);
                   await gamePageViewModel.updateDifficulty();
                 },
