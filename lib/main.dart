@@ -37,8 +37,10 @@ class MyApp extends StatelessWidget {
   Future init(BuildContext context) async {
     final prefsManager = context.read<PrefsManager>();
     final startPageViewModel = context.read<StartPageViewModel>();
+    final gamePageViewModel = context.read<GamePageViewModel>();
     await prefsManager.init();
     await startPageViewModel.getDifficulty();
+    await gamePageViewModel.updateDifficulty();
     return;
   }
 
