@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:minesweeper/game_page.dart';
+import 'package:minesweeper/repository/game_setting_repository.dart';
 import 'package:minesweeper/start_page.dart';
 import 'package:minesweeper/utils/analytics.dart';
 import 'package:minesweeper/view_model/game_page_view_model.dart';
@@ -20,10 +21,17 @@ Future main() async {
       providers: [
         Provider(create: (context) => PrefsManager()),
         ChangeNotifierProvider(
-          create: (context) => StartPageViewModel(prefsManager: context.read()),
-        ),
+            create: (context) =>
+                GameSettingRepository(prefsManager: context.read())),
         ChangeNotifierProvider(
-          create: (context) => GamePageViewModel(prefsManager: context.read()),
+          create: (context) =>
+              StartPageViewModel(gameSettingRepository: context.read()),
+        ),
+        ChangeNotifierProxyProvider<GameSettingRepository, GamePageViewModel>(
+          // create: (context) => GamePageViewModel(prefsManager: context.read()),
+          create: (context) => GamePageViewModel(),
+          update: (context, gameSettingRepository, gamePageViewModel) =>
+              gamePageViewModel!..updateDifficulty(gameSettingRepository),
         ),
       ],
       child: const MyApp(),
@@ -34,13 +42,11 @@ Future main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  Future init(BuildContext context) async {
+  Future<void> init(BuildContext context) async {
     final prefsManager = context.read<PrefsManager>();
     final startPageViewModel = context.read<StartPageViewModel>();
-    final gamePageViewModel = context.read<GamePageViewModel>();
     await prefsManager.init();
     await startPageViewModel.getDifficulty();
-    await gamePageViewModel.updateDifficulty();
     return;
   }
 

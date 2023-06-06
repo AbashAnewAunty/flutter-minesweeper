@@ -1,24 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:minesweeper/constant.dart';
-import 'package:minesweeper/manager/prefs_manager.dart';
+import 'package:minesweeper/repository/game_setting_repository.dart';
 
 import '../model/field.dart';
 import '../model/tile.dart';
 
 class GamePageViewModel extends ChangeNotifier {
-  late final PrefsManager _prefsManager;
-
-  GamePageViewModel({required PrefsManager prefsManager}) {
-    _prefsManager = prefsManager;
-  }
-
   Difficulty _difficulty = Difficulty.normal;
 
   Difficulty get difficulty => _difficulty;
 
-  Future<void> updateDifficulty() async {
-    _difficulty = await _prefsManager.getDifficulty();
+  void updateDifficulty(GameSettingRepository gameSettingRepository) async {
+    _difficulty = gameSettingRepository.difficulty;
     final map = {
       Difficulty.easy: Field(
         row: 10,
