@@ -13,53 +13,58 @@ class GamePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<GamePageViewModel>();
-    return Material(
-      color: Colors.blueGrey,
-      child: SafeArea(
-        child: Container(
-          color: Colors.grey,
-          child: Column(
-            children: [
-              _tempAppbar(context),
-              Expanded(
-                child: Center(
-                  child: Selector<GamePageViewModel,
-                      Tuple2<GameState, Difficulty>>(
-                    selector: (context, viewModel) =>
-                        Tuple2(viewModel.state, viewModel.difficulty),
-                    shouldRebuild: (oldState, newState) {
-                      if (oldState == GameState.isPlaying &&
-                          newState == GameState.beforeGame) {
-                        viewModel.reset();
-                        return true;
-                      } else {
-                        return false;
-                      }
-                    },
-                    builder: (context, state, child) {
-                      return GridView.count(
-                        crossAxisCount: viewModel.tileColumnCount,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 20,
-                        ),
-                        physics: const NeverScrollableScrollPhysics(),
-                        mainAxisSpacing: 1,
-                        crossAxisSpacing: 1,
-                        children: List.generate(
-                          viewModel.tileCount,
-                          (index) => GameTile(tileIndex: index),
-                        ),
-                      );
-                    },
+    return WillPopScope(
+      onWillPop: () async {
+        return true;
+      },
+      child: Material(
+        color: Colors.blueGrey,
+        child: SafeArea(
+          child: Container(
+            color: Colors.grey,
+            child: Column(
+              children: [
+                _tempAppbar(context),
+                Expanded(
+                  child: Center(
+                    child: Selector<GamePageViewModel,
+                        Tuple2<GameState, Difficulty>>(
+                      selector: (context, viewModel) =>
+                          Tuple2(viewModel.state, viewModel.difficulty),
+                      shouldRebuild: (oldState, newState) {
+                        if (oldState == GameState.isPlaying &&
+                            newState == GameState.beforeGame) {
+                          viewModel.reset();
+                          return true;
+                        } else {
+                          return false;
+                        }
+                      },
+                      builder: (context, state, child) {
+                        return GridView.count(
+                          crossAxisCount: viewModel.tileColumnCount,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 20,
+                          ),
+                          physics: const NeverScrollableScrollPhysics(),
+                          mainAxisSpacing: 1,
+                          crossAxisSpacing: 1,
+                          children: List.generate(
+                            viewModel.tileCount,
+                            (index) => GameTile(tileIndex: index),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-              ElevatedButton(
-                onPressed: () => viewModel.reset(),
-                child: const Text("reset"),
-              ),
-            ],
+                ElevatedButton(
+                  onPressed: () => viewModel.reset(),
+                  child: const Text("reset"),
+                ),
+              ],
+            ),
           ),
         ),
       ),
