@@ -33,12 +33,17 @@ class _StartPageState extends State<StartPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text("Minesweeper"),
+              const Text(
+                "Minesweeper",
+                style: TextStyle(fontSize: 22),
+              ),
+              const SizedBox(height: 5),
+              const Text("choose difficulty and tap Quick Play !"),
               const SizedBox(height: 10),
               _quickPlayButton(context),
               const SizedBox(height: 20),
               GroupButton(
-                buttons: const ["easy", "normal", "hard"],
+                buttons: const ["Easy", "Normal", "Hard"],
                 controller: _groupButtonController,
                 onSelected: (text, index, isSelected) async {
                   final startPageViewModel = context.read<StartPageViewModel>();
@@ -46,13 +51,29 @@ class _StartPageState extends State<StartPage> {
                       Difficulty.values.toList().elementAt(index);
                   await startPageViewModel.setDifficulty(difficulty);
                 },
+                options:
+                    const GroupButtonOptions(groupingType: GroupingType.column),
                 buttonBuilder: (isSelected, text, context) {
                   return Container(
-                    width: isSelected ? 40 : 20,
-                    height: isSelected ? 40 : 20,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.redAccent,
+                    constraints:
+                        BoxConstraints(maxWidth: isSelected ? 200 : 150),
+                    decoration: BoxDecoration(
+                      color: isSelected ? Colors.redAccent : Colors.grey,
+                    ),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 20,
+                        ),
+                        child: Text(
+                          text,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: isSelected ? 18 : 14,
+                          ),
+                        ),
+                      ),
                     ),
                   );
                 },
@@ -68,7 +89,7 @@ class _StartPageState extends State<StartPage> {
     return ElevatedButton(
       onPressed: () => Navigator.of(context).pushNamed("/game"),
       style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
-      child: const Text("Quick Play"),
+      child: const Text("Quick Play", style: TextStyle(fontSize: 18)),
     );
   }
 }
