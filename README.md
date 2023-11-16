@@ -30,3 +30,6 @@ flutter pub run build_runner build
 flutter test test/view_model/game_page_view_model.dart
 
 ```
+
+app icon is from
+https://www.flaticon.com/free-icon/bomb-detonation_7622036?term=bomb&page=2&position=1&origin=search&related_id=7622036
