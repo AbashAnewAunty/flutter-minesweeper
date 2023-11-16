@@ -17,10 +17,14 @@ class GamePage extends StatelessWidget {
       onWillPop: () async {
         return true;
       },
-      child: Material(
-        color: Colors.blueGrey,
-        child: SafeArea(
-          child: Container(
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            leading: const SizedBox(),
+            backgroundColor: Colors.blueGrey,
+            elevation: 0,
+          ),
+          body: Material(
             color: Colors.grey,
             child: Column(
               children: [
@@ -58,10 +62,6 @@ class GamePage extends StatelessWidget {
                       },
                     ),
                   ),
-                ),
-                ElevatedButton(
-                  onPressed: () => viewModel.reset(),
-                  child: const Text("reset"),
                 ),
               ],
             ),
@@ -105,6 +105,17 @@ class GamePage extends StatelessWidget {
           ),
         ],
       ),
+      actions: [
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            final viewModel = context.read<GamePageViewModel>();
+            viewModel.reset();
+          },
+          child: const Icon(Icons.refresh),
+        ),
+        const SizedBox(width: 15)
+      ],
     );
   }
 }
