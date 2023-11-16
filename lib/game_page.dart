@@ -32,8 +32,8 @@ class GamePage extends StatelessWidget {
                       selector: (context, viewModel) =>
                           Tuple2(viewModel.state, viewModel.difficulty),
                       shouldRebuild: (oldState, newState) {
-                        if (oldState == GameState.isPlaying &&
-                            newState == GameState.beforeGame) {
+                        if (oldState.item1 == GameState.isPlaying &&
+                            newState.item1 == GameState.beforeGame) {
                           viewModel.reset();
                           return true;
                         } else {
