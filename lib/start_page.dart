@@ -88,7 +88,7 @@ class _StartPageState extends State<StartPage> {
 
   Widget _quickPlayButton(BuildContext context) {
     return ElevatedButton(
-      onPressed: () => GoRouter.of(context).go("/game"),
+      onPressed: () => GoRouter.of(context).go("/home/game"),
       style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
       child: const Text("Quick Play", style: TextStyle(fontSize: 18)),
     );

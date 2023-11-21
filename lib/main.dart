@@ -55,16 +55,18 @@ class MyApp extends StatelessWidget {
             child: const StartPage(),
           );
         },
-      ),
-      GoRoute(
-        path: "/game",
-        pageBuilder: (context, state) {
-          logScreenView(screenName: "Game");
-          return MaterialPage(
-            key: state.pageKey,
-            child: const GamePage(),
-          );
-        },
+        routes: <RouteBase>[
+          GoRoute(
+            path: "game",
+            pageBuilder: (context, state) {
+              logScreenView(screenName: "Game");
+              return MaterialPage(
+                key: state.pageKey,
+                child: const GamePage(),
+              );
+            },
+          ),
+        ],
       ),
     ],
   );
