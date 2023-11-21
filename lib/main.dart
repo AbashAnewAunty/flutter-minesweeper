@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:minesweeper/game_page.dart';
 import 'package:minesweeper/repository/game_setting_repository.dart';
 import 'package:minesweeper/start_page.dart';
@@ -34,13 +35,39 @@ Future main() async {
               gamePageViewModel!..updateDifficulty(gameSettingRepository),
         ),
       ],
-      child: const MyApp(),
+      child: MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final GoRouter _router = GoRouter(
+    initialLocation: "/home",
+    routes: <RouteBase>[
+      GoRoute(
+        path: "/home",
+        pageBuilder: (context, state) {
+          logScreenView(screenName: "Start");
+          return MaterialPage(
+            key: state.pageKey,
+            child: const StartPage(),
+          );
+        },
+      ),
+      GoRoute(
+        path: "/game",
+        pageBuilder: (context, state) {
+          logScreenView(screenName: "Game");
+          return MaterialPage(
+            key: state.pageKey,
+            child: const GamePage(),
+          );
+        },
+      ),
+    ],
+  );
 
   Future<void> init(BuildContext context) async {
     final prefsManager = context.read<PrefsManager>();
@@ -61,22 +88,15 @@ class MyApp extends StatelessWidget {
           );
         }
 
-        return MaterialApp(
+        return MaterialApp.router(
           title: 'Flutter MineSweeper',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          initialRoute: "/",
-          routes: {
-            "/": (context) {
-              logScreenView(screenName: "Start");
-              return const StartPage();
-            },
-            "/game": (context) {
-              logScreenView(screenName: "Game");
-              return const GamePage();
-            },
+          routerConfig: _router,
+          builder: (context, child) {
+            return child!;
           },
         );
       },

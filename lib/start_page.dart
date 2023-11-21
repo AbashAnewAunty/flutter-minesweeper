@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:group_button/group_button.dart';
 import 'package:minesweeper/constant.dart';
 import 'package:minesweeper/view_model/start_page_view_model.dart';
@@ -87,7 +88,7 @@ class _StartPageState extends State<StartPage> {
 
   Widget _quickPlayButton(BuildContext context) {
     return ElevatedButton(
-      onPressed: () => Navigator.of(context).pushNamed("/game"),
+      onPressed: () => GoRouter.of(context).go("/game"),
       style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
       child: const Text("Quick Play", style: TextStyle(fontSize: 18)),
     );
