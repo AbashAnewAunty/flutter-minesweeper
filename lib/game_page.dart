@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:minesweeper/constant.dart';
 import 'package:minesweeper/utils/analytics.dart';
 import 'package:minesweeper/view_model/game_page_view_model.dart';
@@ -76,8 +77,8 @@ class GamePage extends StatelessWidget {
       backgroundColor: Colors.blueGrey,
       leading: GestureDetector(
         onTap: () {
-          logScreenView(screenName: "Start");
-          Navigator.of(context).pop();
+          logScreenView(screenName: "Home");
+          GoRouter.of(context).pop();
         },
         child: const Icon(Icons.arrow_back_ios),
       ),
