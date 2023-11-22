@@ -14,41 +14,39 @@ class GamePage extends StatelessWidget {
       onWillPop: () async {
         return true;
       },
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            leading: const SizedBox(),
-            backgroundColor: Colors.blueGrey,
-            elevation: 0,
-          ),
-          body: Material(
-            color: Colors.grey,
-            child: Column(
-              children: [
-                _tempAppbar(context),
-                Expanded(
-                  child: Center(
-                    child: Consumer<GamePageViewModel>(
-                      builder: (context, viewModel, child) {
-                        return GridView.count(
-                          crossAxisCount: viewModel.tileColumnCount,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 20,
-                          ),
-                          physics: const NeverScrollableScrollPhysics(),
-                          mainAxisSpacing: 1,
-                          crossAxisSpacing: 1,
-                          children: List.generate(
-                            viewModel.tileCount,
-                            (index) => GameTile(tileIndex: index),
-                          ),
-                        );
-                      },
+      child: Material(
+        color: Colors.blueGrey,
+        child: SafeArea(
+          child: Scaffold(
+            appBar: _tempAppbar(context),
+            body: Material(
+              color: Colors.grey,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: Consumer<GamePageViewModel>(
+                        builder: (context, viewModel, child) {
+                          return GridView.count(
+                            crossAxisCount: viewModel.tileColumnCount,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 15,
+                              vertical: 20,
+                            ),
+                            physics: const NeverScrollableScrollPhysics(),
+                            mainAxisSpacing: 1,
+                            crossAxisSpacing: 1,
+                            children: List.generate(
+                              viewModel.tileCount,
+                              (index) => GameTile(tileIndex: index),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -56,7 +54,7 @@ class GamePage extends StatelessWidget {
     );
   }
 
-  Widget _tempAppbar(BuildContext context) {
+  AppBar _tempAppbar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.blueGrey,
       leading: GestureDetector(

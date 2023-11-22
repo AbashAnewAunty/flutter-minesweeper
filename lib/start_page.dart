@@ -19,8 +19,7 @@ class _StartPageState extends State<StartPage> {
   void initState() {
     super.initState();
     final viewModel = context.read<StartPageViewModel>();
-    _groupButtonController =
-        GroupButtonController(selectedIndex: viewModel.difficulty.index);
+    _groupButtonController = GroupButtonController(selectedIndex: viewModel.difficulty.index);
   }
 
   @override
@@ -48,16 +47,13 @@ class _StartPageState extends State<StartPage> {
                 controller: _groupButtonController,
                 onSelected: (text, index, isSelected) async {
                   final startPageViewModel = context.read<StartPageViewModel>();
-                  final Difficulty difficulty =
-                      Difficulty.values.toList().elementAt(index);
+                  final Difficulty difficulty = Difficulty.values.toList().elementAt(index);
                   await startPageViewModel.setDifficulty(difficulty);
                 },
-                options:
-                    const GroupButtonOptions(groupingType: GroupingType.column),
+                options: const GroupButtonOptions(groupingType: GroupingType.column),
                 buttonBuilder: (isSelected, text, context) {
                   return Container(
-                    constraints:
-                        BoxConstraints(maxWidth: isSelected ? 200 : 150),
+                    constraints: BoxConstraints(maxWidth: isSelected ? 200 : 150),
                     decoration: BoxDecoration(
                       color: isSelected ? Colors.redAccent : Colors.grey,
                     ),
