@@ -15,19 +15,19 @@ class GamePageViewModel extends ChangeNotifier {
     _difficulty = gameSettingRepository.difficulty;
     final map = {
       Difficulty.easy: Field(
-        row: 10,
-        column: 10,
-        bombCount: 10,
+        row: MyConstants.rowEasy,
+        column: MyConstants.columnEasy,
+        bombCount: MyConstants.bombCountEasy,
       ),
       Difficulty.normal: Field(
-        row: 18,
-        column: 11,
-        bombCount: 35,
+        row: MyConstants.rowNormal,
+        column: MyConstants.columnNorml,
+        bombCount: MyConstants.bombCountHard,
       ),
       Difficulty.hard: Field(
-        row: 20,
-        column: 12,
-        bombCount: 50,
+        row: MyConstants.rowHard,
+        column: MyConstants.columnHard,
+        bombCount: MyConstants.bombCountHard,
       ),
     };
     final field = map[_difficulty] ?? Field(row: 1, column: 1, bombCount: 1);
@@ -89,8 +89,7 @@ class GamePageViewModel extends ChangeNotifier {
   /// にする
   /// タイマーをリセット
   void reset() {
-    _tiles = List.generate(
-        _tileColumnCount * _tileRowCount, (index) => Tile(hasBomb: false));
+    _tiles = List.generate(_tileColumnCount * _tileRowCount, (index) => Tile(hasBomb: false));
     _state = GameState.beforeGame;
     _isWatchingTimer = false;
     _stopwatch.reset();
@@ -132,8 +131,7 @@ class GamePageViewModel extends ChangeNotifier {
       _openSafeTilesAround(index);
     }
 
-    if (_tiles.where((tile) => tile.isOpen).length ==
-        _tiles.length - _bombCount) {
+    if (_tiles.where((tile) => tile.isOpen).length == _tiles.length - _bombCount) {
       _stopwatch.stop();
       _isWatchingTimer = false;
       _state = GameState.gameClear;
@@ -397,8 +395,7 @@ class GamePageViewModel extends ChangeNotifier {
 
   /// 下辺のタイルである
   _isBottomSide(int index) =>
-      index > _tileColumnCount * (_tileRowCount - 1) &&
-      index < _tileColumnCount * _tileRowCount - 1;
+      index > _tileColumnCount * (_tileRowCount - 1) && index < _tileColumnCount * _tileRowCount - 1;
 
   _leftHasBomb(int index) => _tiles[index - 1].hasBomb;
 
