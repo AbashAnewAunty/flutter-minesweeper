@@ -44,8 +44,7 @@ class GameTile extends StatelessWidget {
         selector: (context, viewModel) => viewModel.tiles[tileIndex].isOpen,
         builder: (context, isOpen, child) {
           return Selector<GamePageViewModel, bool>(
-            selector: (context, viewModel) =>
-                viewModel.tiles[tileIndex].hasFlag,
+            selector: (context, viewModel) => viewModel.tiles[tileIndex].hasFlag,
             builder: (context, hasFlag, child) {
               return Stack(
                 alignment: Alignment.center,
@@ -59,13 +58,11 @@ class GameTile extends StatelessWidget {
                       child: isOpen &&
                               !viewModel.tiles[tileIndex].hasBomb &&
                               viewModel.tiles[tileIndex].bombsAroundCount != 0
-                          ? Text(
-                              "${viewModel.tiles[tileIndex].bombsAroundCount}")
+                          ? Text("${viewModel.tiles[tileIndex].bombsAroundCount}")
                           : null,
                     ),
                   ),
-                  if (!viewModel.tiles[tileIndex].isOpen &&
-                      viewModel.tiles[tileIndex].hasFlag)
+                  if (!viewModel.tiles[tileIndex].isOpen && viewModel.tiles[tileIndex].hasFlag)
                     const Icon(
                       Icons.flag_rounded,
                       color: Colors.white70,
@@ -86,7 +83,7 @@ class GameTile extends StatelessWidget {
     if (hasBomb) {
       return Colors.red;
     } else {
-      return Colors.lightBlueAccent;
+      return Colors.grey.withAlpha(128);
     }
   }
 }

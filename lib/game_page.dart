@@ -19,33 +19,24 @@ class GamePage extends StatelessWidget {
         child: SafeArea(
           child: Scaffold(
             appBar: _tempAppbar(context),
-            body: Material(
-              color: Colors.grey,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Center(
-                      child: Consumer<GamePageViewModel>(
-                        builder: (context, viewModel, child) {
-                          return GridView.count(
-                            crossAxisCount: viewModel.tileColumnCount,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 15,
-                              vertical: 20,
-                            ),
-                            physics: const NeverScrollableScrollPhysics(),
-                            mainAxisSpacing: 1,
-                            crossAxisSpacing: 1,
-                            children: List.generate(
-                              viewModel.tileCount,
-                              (index) => GameTile(tileIndex: index),
-                            ),
-                          );
-                        },
-                      ),
+            body: Center(
+              child: Consumer<GamePageViewModel>(
+                builder: (context, viewModel, child) {
+                  return GridView.count(
+                    crossAxisCount: viewModel.tileColumnCount,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 20,
                     ),
-                  ),
-                ],
+                    physics: const NeverScrollableScrollPhysics(),
+                    mainAxisSpacing: 1,
+                    crossAxisSpacing: 1,
+                    children: List.generate(
+                      viewModel.tileCount,
+                      (index) => GameTile(tileIndex: index),
+                    ),
+                  );
+                },
               ),
             ),
           ),

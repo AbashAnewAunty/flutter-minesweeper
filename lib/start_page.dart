@@ -6,7 +6,7 @@ import 'package:minesweeper/view_model/start_page_view_model.dart';
 import 'package:provider/provider.dart';
 
 class StartPage extends StatefulWidget {
-  const StartPage({Key? key}) : super(key: key);
+  const StartPage({super.key});
 
   @override
   State<StartPage> createState() => _StartPageState();
@@ -33,15 +33,27 @@ class _StartPageState extends State<StartPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                "Minesweeper",
-                style: TextStyle(fontSize: 22),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border.all(color: Colors.blueGrey, width: 2),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: const Text(
+                  "Mine Cleaner",
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.blueGrey,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 40),
               const Text("choose difficulty and tap Quick Play !"),
               const SizedBox(height: 10),
               _quickPlayButton(context),
-              const SizedBox(height: 20),
+              const SizedBox(height: 60),
               GroupButton(
                 buttons: const ["Easy", "Normal", "Hard"],
                 controller: _groupButtonController,
@@ -55,7 +67,12 @@ class _StartPageState extends State<StartPage> {
                   return Container(
                     constraints: BoxConstraints(maxWidth: isSelected ? 200 : 150),
                     decoration: BoxDecoration(
-                      color: isSelected ? Colors.redAccent : Colors.grey,
+                      color: isSelected ? Colors.blueGrey : Colors.transparent,
+                      borderRadius: BorderRadius.circular(isSelected ? 8 : 5),
+                      border: Border.all(
+                        width: 2,
+                        color: isSelected ? Colors.blueGrey : Colors.blueGrey,
+                      ),
                     ),
                     child: Center(
                       child: Padding(
@@ -66,8 +83,9 @@ class _StartPageState extends State<StartPage> {
                         child: Text(
                           text,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: isSelected ? Colors.white : Colors.blueGrey,
                             fontSize: isSelected ? 18 : 14,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -83,10 +101,31 @@ class _StartPageState extends State<StartPage> {
   }
 
   Widget _quickPlayButton(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () => GoRouter.of(context).go("/home/game"),
-      style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
-      child: const Text("Quick Play", style: TextStyle(fontSize: 18)),
+    return InkWell(
+      onTap: () => GoRouter.of(context).go("/home/game"),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
+        decoration: BoxDecoration(
+          color: Colors.blueGrey,
+          borderRadius: BorderRadius.circular(5),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(128),
+              blurRadius: 2,
+              spreadRadius: 2,
+              offset: const Offset(5, 5),
+            ),
+          ],
+        ),
+        child: const Text(
+          "Quick Play",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ),
     );
   }
 }
