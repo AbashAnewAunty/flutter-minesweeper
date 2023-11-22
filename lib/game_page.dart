@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:minesweeper/constant.dart';
 import 'package:minesweeper/utils/analytics.dart';
 import 'package:minesweeper/view_model/game_page_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:tuple/tuple.dart';
-
 import 'game_tile.dart';
 
 class GamePage extends StatelessWidget {
@@ -13,7 +10,6 @@ class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<GamePageViewModel>();
     return WillPopScope(
       onWillPop: () async {
         return true;
@@ -32,20 +28,8 @@ class GamePage extends StatelessWidget {
                 _tempAppbar(context),
                 Expanded(
                   child: Center(
-                    child: Selector<GamePageViewModel,
-                        Tuple2<GameState, Difficulty>>(
-                      selector: (context, viewModel) =>
-                          Tuple2(viewModel.state, viewModel.difficulty),
-                      shouldRebuild: (oldState, newState) {
-                        if (oldState.item1 == GameState.isPlaying &&
-                            newState.item1 == GameState.beforeGame) {
-                          viewModel.reset();
-                          return true;
-                        } else {
-                          return false;
-                        }
-                      },
-                      builder: (context, state, child) {
+                    child: Consumer<GamePageViewModel>(
+                      builder: (context, viewModel, child) {
                         return GridView.count(
                           crossAxisCount: viewModel.tileColumnCount,
                           padding: const EdgeInsets.symmetric(

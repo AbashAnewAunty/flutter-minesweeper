@@ -141,7 +141,7 @@ class GamePageViewModel extends ChangeNotifier {
   }
 
   bool existSomethingAt(int index) {
-    assert(index > 0 && index < tileCount);
+    assert(index >= 0 && index < tileCount);
     return _tiles[index].hasBomb || _calculateBombsAroundCount(index) != 0;
   }
 
