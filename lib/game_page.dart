@@ -18,7 +18,7 @@ class GamePage extends StatelessWidget {
         color: Colors.blueGrey,
         child: SafeArea(
           child: Scaffold(
-            appBar: _tempAppbar(context),
+            appBar: _appbar(context),
             body: Center(
               child: Consumer<GamePageViewModel>(
                 builder: (context, viewModel, child) {
@@ -45,7 +45,7 @@ class GamePage extends StatelessWidget {
     );
   }
 
-  AppBar _tempAppbar(BuildContext context) {
+  AppBar _appbar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.blueGrey,
       leading: GestureDetector(

@@ -22,7 +22,7 @@ class GamePageViewModel extends ChangeNotifier {
       Difficulty.normal: Field(
         row: MyConstants.rowNormal,
         column: MyConstants.columnNorml,
-        bombCount: MyConstants.bombCountHard,
+        bombCount: MyConstants.bombCountNormal,
       ),
       Difficulty.hard: Field(
         row: MyConstants.rowHard,
