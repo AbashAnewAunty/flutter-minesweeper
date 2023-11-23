@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:minesweeper/game_page.dart';
 import 'package:minesweeper/repository/game_setting_repository.dart';
@@ -30,12 +31,9 @@ Future main() async {
     MultiProvider(
       providers: [
         Provider(create: (context) => PrefsManager()),
+        ChangeNotifierProvider(create: (context) => GameSettingRepository(prefsManager: context.read())),
         ChangeNotifierProvider(
-            create: (context) =>
-                GameSettingRepository(prefsManager: context.read())),
-        ChangeNotifierProvider(
-          create: (context) =>
-              StartPageViewModel(gameSettingRepository: context.read()),
+          create: (context) => StartPageViewModel(gameSettingRepository: context.read()),
         ),
         ChangeNotifierProxyProvider<GameSettingRepository, GamePageViewModel>(
           // create: (context) => GamePageViewModel(prefsManager: context.read()),
