@@ -20,23 +20,26 @@ class GamePage extends StatelessWidget {
           child: Scaffold(
             appBar: _appbar(context),
             body: Center(
-              child: Consumer<GamePageViewModel>(
-                builder: (context, viewModel, child) {
-                  return GridView.count(
-                    crossAxisCount: viewModel.tileColumnCount,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 20,
-                    ),
-                    physics: const NeverScrollableScrollPhysics(),
-                    mainAxisSpacing: 1,
-                    crossAxisSpacing: 1,
-                    children: List.generate(
-                      viewModel.tileCount,
-                      (index) => GameTile(tileIndex: index),
-                    ),
-                  );
-                },
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 750),
+                child: Consumer<GamePageViewModel>(
+                  builder: (context, viewModel, child) {
+                    return GridView.count(
+                      crossAxisCount: viewModel.tileColumnCount,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 20,
+                      ),
+                      physics: const NeverScrollableScrollPhysics(),
+                      mainAxisSpacing: 1,
+                      crossAxisSpacing: 1,
+                      children: List.generate(
+                        viewModel.tileCount,
+                        (index) => GameTile(tileIndex: index),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ),
