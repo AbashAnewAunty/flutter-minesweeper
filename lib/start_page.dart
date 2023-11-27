@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:group_button/group_button.dart';
 import 'package:minesweeper/constant.dart';
+import 'package:minesweeper/utils/app_tracking_requester.dart';
 import 'package:minesweeper/view_model/start_page_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +21,12 @@ class _StartPageState extends State<StartPage> {
     super.initState();
     final viewModel = context.read<StartPageViewModel>();
     _groupButtonController = GroupButtonController(selectedIndex: viewModel.difficulty.index);
+
+    // build完了後処理
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // ATTダイアログ
+      await AppTrackingRequester.instance.requestPermission();
+    });
   }
 
   @override
