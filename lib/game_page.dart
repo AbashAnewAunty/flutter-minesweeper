@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:minesweeper/utils/analytics.dart';
 import 'package:minesweeper/view_model/game_page_view_model.dart';
@@ -24,18 +25,28 @@ class GamePage extends StatelessWidget {
                 constraints: const BoxConstraints(maxWidth: 750),
                 child: Consumer<GamePageViewModel>(
                   builder: (context, viewModel, child) {
-                    return GridView.count(
-                      crossAxisCount: viewModel.tileColumnCount,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 20,
-                      ),
-                      physics: const NeverScrollableScrollPhysics(),
-                      mainAxisSpacing: 1,
-                      crossAxisSpacing: 1,
-                      children: List.generate(
-                        viewModel.tileCount,
-                        (index) => GameTile(tileIndex: index),
+                    return AnimationLimiter(
+                      child: GridView.count(
+                        crossAxisCount: viewModel.tileColumnCount,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 20,
+                        ),
+                        physics: const NeverScrollableScrollPhysics(),
+                        mainAxisSpacing: 1,
+                        crossAxisSpacing: 1,
+                        children: List.generate(
+                          viewModel.tileCount,
+                          (index) => AnimationConfiguration.staggeredGrid(
+                            position: index,
+                            columnCount: viewModel.tileColumnCount,
+                            child: ScaleAnimation(
+                              child: FadeInAnimation(
+                                child: GameTile(tileIndex: index),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     );
                   },
