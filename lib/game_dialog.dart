@@ -48,7 +48,7 @@ class GameOverDialog extends StatelessWidget {
 }
 
 class GameClearDialog extends StatelessWidget {
-  const GameClearDialog({Key? key}) : super(key: key);
+  const GameClearDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
