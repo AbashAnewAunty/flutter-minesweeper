@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:minesweeper/constant.dart';
 import 'package:minesweeper/utils/analytics.dart';
 import 'package:minesweeper/view_model/game_page_view_model.dart';
 import 'package:provider/provider.dart';
@@ -63,9 +64,53 @@ class GamePage extends StatelessWidget {
     return AppBar(
       backgroundColor: Colors.blueGrey,
       leading: GestureDetector(
-        onTap: () {
+        onTap: () async {
+          final viewModel = context.read<GamePageViewModel>();
+          final goRouter = GoRouter.of(context);
+          if (viewModel.state == GameState.isPlaying) {
+            final requestQuitingGame = await showDialog(
+                context: context,
+                builder: (_) {
+                  return AlertDialog(
+                    content: const Text("Do you quit game ?"),
+                    actions: [
+                      GestureDetector(
+                        onTap: () => Navigator.of(context).pop(false),
+                        behavior: HitTestBehavior.opaque,
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5,
+                          ),
+                          child: Text(
+                            "No",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => Navigator.of(context).pop(true),
+                        behavior: HitTestBehavior.opaque,
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5,
+                          ),
+                          child: Text(
+                            "Yes",
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                });
+
+            if (!requestQuitingGame) return;
+          }
+
           logScreenView(screenName: "Home");
-          GoRouter.of(context).pop();
+          goRouter.pop();
         },
         child: const Icon(Icons.arrow_back_ios),
       ),

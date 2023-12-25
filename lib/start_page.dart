@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:group_button/group_button.dart';
 import 'package:minesweeper/constant.dart';
 import 'package:minesweeper/utils/app_tracking_requester.dart';
+import 'package:minesweeper/view_model/game_page_view_model.dart';
 import 'package:minesweeper/view_model/start_page_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -109,7 +110,11 @@ class _StartPageState extends State<StartPage> {
 
   Widget _quickPlayButton(BuildContext context) {
     return InkWell(
-      onTap: () => GoRouter.of(context).go("/home/game"),
+      onTap: () {
+        final viewModel = context.read<GamePageViewModel>();
+        viewModel.reset();
+        GoRouter.of(context).go("/home/game");
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
         decoration: BoxDecoration(
