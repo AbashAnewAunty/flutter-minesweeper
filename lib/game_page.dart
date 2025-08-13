@@ -12,10 +12,8 @@ class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return true;
-      },
+    return PopScope(
+      canPop: false,
       child: Material(
         color: Colors.blueGrey,
         child: SafeArea(
